@@ -1,0 +1,330 @@
+import sys
+import os
+import logging
+import json
+import sys
+import os
+import tempfile
+import logging
+import json
+from pathlib import Path
+import shutil # 用于创建/删除目录等文件操作
+import copy # 用于 _render_textbox_sync 中的深拷贝
+import asyncio # 用于异步执行同步代码
+import urllib.request
+
+PROJECT_ROOT = "/root/Paper2Poster-main/Paper2Poster-main"
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from PosterAgent.parse_raw import parse_raw, gen_image_and_table
+from PosterAgent.gen_outline_layout import filter_image_table, gen_outline_layout_v2
+from utils.wei_utils import get_agent_config, utils_functions, run_code, style_bullet_content, scale_to_target_area, char_capacity
+from PosterAgent.tree_split_layout import main_train, main_inference, get_arrangments_in_inches, split_textbox, to_inches
+from PosterAgent.gen_pptx_code import generate_poster_code
+from utils.src.utils import ppt_to_images
+from PosterAgent.gen_poster_content import gen_bullet_point_content
+from utils.ablation_utils import no_tree_get_layout
+from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
+from fastapi.responses import JSONResponse
+# from fastapi.staticfiles import StaticFiles # 如果需要提供静态文件服务，可以取消注释并挂载
+
+# 导入你的 PosterAgent 和 utils 模块
+# 假设这些模块位于与此服务文件相同的 'Paper2Poster-main' 根目录下，
+# 或者它们的父目录已添加到 Python 路径中。
+# 例如：DOCLING_PACKAGE_ROOT = "/root/project/Paper2Poster-main"
+# if DOCLING_PACKAGE_ROOT not in sys.path:
+#     sys.path.insert(0, DOCLING_PACKAGE_ROOT)
+# 如果你的模块直接位于当前工作目录，则下面的导入应该可以直接工作。
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from pptx import Presentation
+from pptx.util import Inches
+
+from PosterAgent.new_pipeline import generate_poster_code, run_code
+##from utils.src.utils import get_utils
+##from PosterAgent.utils import get_utils  # 确保你能 import utils_functions
+from PosterAgent.tree_split_layout import main_train, main_inference
+
+# 确保本地模块能被 import
+PROJECT_ROOT = "/root/project/Paper2Poster-main"
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+
+# 固定海报尺寸（和 new_pipeline.py 保持一致）
+POSTER_WIDTH = 48 * 25  # 1200
+POSTER_HEIGHT = 36 * 25 # 900
+
+app = FastAPI(title="Poster Layout Service", version="1.0.0")
+logging.basicConfig(level=logging.INFO) # 保持INFO级别，可以根据需要调整
+logger = logging.getLogger(__name__)
+
+# --- 异步清理函数 ---
+async def _cleanup_temp_dir(path: Path):
+    """异步清理指定的临时目录及其内容。"""
+    if path.exists() and path.is_dir():
+        try:
+            shutil.rmtree(path)
+            logger.info(f"成功清理临时目录: {path}")
+        except OSError as e:
+            logger.error(f"清理临时目录失败 {path}: {e}")
+# --------------------
+
+# 挂载静态文件目录（例如将 /root/output 映射为 /files）
+app.mount("/files", StaticFiles(directory="/root/Paper2Poster-main/output"), name="files")
+
+@app.post("/layout/")
+async def layout_endpoint(request: Request):
+    try:
+        # 1. 获取原始请求体内容作为字符串
+        raw_body_str = (await request.body()).decode('utf-8')
+        logger.info(f"Received raw HTTP body string: '{raw_body_str}'")
+
+        data = None # 初始化 data 变量
+
+        # 2. 尝试解析为 JSON 对象 (第一次解析)
+        try:
+            first_parsed_data = json.loads(raw_body_str)
+            logger.info(f"First JSON parse result type: {type(first_parsed_data)}")
+            logger.debug(f"First JSON parse result value: {first_parsed_data}") # 使用 debug 避免输出过长
+
+            # 3. 检查解析结果是否仍然是字符串 (处理双重编码的情况)
+            if isinstance(first_parsed_data, str):
+                logger.warning("Detected potential double-encoded JSON. Attempting to parse again.")
+                try:
+                    data = json.loads(first_parsed_data) # 对字符串内容再次解析
+                    logger.info(f"Successfully performed second JSON parse. Final data type: {type(data)}")
+                    logger.debug(f"Final data value: {data}")
+                except json.JSONDecodeError as inner_e:
+                    logger.error(f"ERROR: Failed to parse inner JSON string (double-encoded issue): {inner_e}", exc_info=True)
+                    raise HTTPException(status_code=400, detail=f"请求体含有无效的双重编码 JSON: {inner_e}")
+            else:
+                # 如果第一次解析就得到字典，直接使用
+                data = first_parsed_data
+                logger.info(f"First parse yielded dict, directly using. Final data type: {type(data)}")
+                logger.debug(f"Final data value: {data}")
+
+        except json.JSONDecodeError as e:
+            logger.error(f"ERROR: Failed to parse raw body as JSON (first parse failed): {e}", exc_info=True)
+            logger.error(f"Raw body content was: '{raw_body_str}'")
+            raise HTTPException(status_code=400, detail=f"请求体 JSON 格式无效: {e}")
+
+        # 此时，`data` 变量应为正确的 Python 字典
+        panels = data["panels"]
+        figures = data["figures"]
+
+        panel_model_params, figure_model_params = main_train()
+        panel_arrangement, figure_arrangement, text_arrangement = main_inference(
+            panels,
+            panel_model_params,
+            figure_model_params,
+            int(POSTER_WIDTH),
+            int(POSTER_HEIGHT),
+            shrink_margin=3
+        )
+        return JSONResponse(content={
+            "panel_arrangement": panel_arrangement,
+            "figure_arrangement": figure_arrangement,
+            "text_arrangement": text_arrangement
+        })
+    except HTTPException as http_exc:
+        # 如果是 FastAPI 抛出的 HTTPException，直接传递
+        raise http_exc
+    except Exception as e:
+        # 捕获所有其他未预料的错误
+        logger.error("布局推理服务出错", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"处理请求失败: {str(e)}")
+
+@app.post("/generate_poster/")
+async def generate_poster_endpoint(request: Request, background_tasks: BackgroundTasks):
+    """
+    接收生成海报所需的数据，生成 PowerPoint 海报并将其转换为图像。
+    海报名称现在由请求体提供。
+    """
+    try:
+        # 获取请求体中的 JSON 数据
+        data = await request.json()
+        # data = json.loads(data)
+        # 获取当前文件的父目录 (即 /root/project/Paper2Poster-main/)
+        current_file_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # 构建 'for' 文件夹的完整路径
+        save_dir = os.path.join(current_file_dir, "z_for_test")
+
+        # 确保 'for' 文件夹存在，如果不存在则创建它
+        os.makedirs(save_dir, exist_ok=True)
+        # 构建最终文件的完整路径
+        save_path = os.path.join(save_dir, "received_request_data.json")      
+        try:
+            with open(save_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4, ensure_ascii=False) # indent=4 让 JSON 更易读
+            logger.info(f"接收到的请求数据已保存至: {save_path}")
+        except Exception as file_error:
+            logger.error(f"保存请求数据到文件时出错: {file_error}")      
+
+        # 确保请求体中包含必要的字段
+        # poster_name 仍然从请求中获取，以保持灵活性，但如果你想默认，可以在这里硬编码
+        if not data or 'bullet_content' not in data or 'tree_split_result' not in data:
+            raise HTTPException(
+                status_code=400,
+                detail="请求体中缺少 'bullet_content', 'tree_split_result' 或 'poster_name' 字段。"
+            )
+
+        bullet_content = data['bullet_content']
+        tree_split_result = data['tree_split_result']
+        poster_name = 'Dify_poster'
+
+        # 从 tree_split_result 中提取所需的值
+        panel_arrangement_inches = tree_split_result.get('panel_arrangement_inches')
+        text_arrangement_inches = tree_split_result.get('text_arrangement_inches')
+        figure_arrangement_inches = tree_split_result.get('figure_arrangement_inches')
+        width_inch = tree_split_result.get('poster_width_inches')
+        height_inch = tree_split_result.get('poster_height_inches')
+
+        # 检查是否所有必要的布局信息都存在
+        if not all([panel_arrangement_inches, text_arrangement_inches, width_inch, height_inch]):
+             raise HTTPException(
+                status_code=400,
+                detail="tree_split_result 中缺少必要的布局信息（panel_arrangement_inches, text_arrangement_inches, poster_width_inches, poster_height_inches）。"
+            )
+
+        # 定义主题颜色和样式 (保持原始代码中的定义)
+        theme_title_text_color = (255, 255, 255)
+        theme_title_fill_color = (47, 85, 151)
+        theme = {
+            'panel_visible': True,
+            'textbox_visible': False,
+            'figure_visible': False,
+            'panel_theme': {
+                'color': theme_title_fill_color,
+                'thickness': 5,
+                'line_style': 'solid',
+            },
+            'textbox_theme': None,
+            'figure_theme': None,
+        }
+
+        # Step 6: 样式化子弹点内容
+        if bullet_content: # 确保 bullet_content 不为空
+            for k, v in bullet_content[0].items():
+                if isinstance(v, list): # 确保 v 是列表，防止字符串迭代错误
+                    style_bullet_content(v, theme_title_text_color, theme_title_fill_color)
+
+            for i in range(1, len(bullet_content)):
+                curr_content = bullet_content[i]
+                if 'title' in curr_content and isinstance(curr_content['title'], list): # 同样确保是列表
+                    style_bullet_content(curr_content['title'], theme_title_text_color, theme_title_fill_color)
+        else:
+            logger.warning("bullet_content 为空，跳过样式化步骤。")
+
+
+        # 为本次请求创建一个临时目录
+        # tempfile.mkdtemp 默认会在系统临时目录中创建，也可以指定 dir 参数
+        # 我们在这里创建一个与静态文件目录无关的临时目录，以便更好地控制清理
+        request_temp_dir = Path(tempfile.mkdtemp(prefix="poster_tmp_"))
+        logger.info(f"为请求创建临时目录: {request_temp_dir.name} (完整路径: {request_temp_dir})")
+
+        # 使用 background_tasks 在响应发送后清理临时目录
+        background_tasks.add_task(_cleanup_temp_dir, request_temp_dir)
+       
+        # Step 6.5: 下载远程图片到本地临时目录
+       
+        # 下载远程图片为本地路径
+        static_dir = Path(current_file_dir).parent / "dify_0001" / "static"
+        static_dir.mkdir(parents=True, exist_ok=True)
+
+        if figure_arrangement_inches:
+            for fig in figure_arrangement_inches:
+                fig_url = fig.get("figure_path")
+                if fig_url and fig_url.startswith("http"):
+                    try:
+                        # 提取图片名称（如 LLM02-picture-1.png）
+                        filename = os.path.basename(fig_url)
+                        local_path = request_temp_dir / filename
+
+                        # 下载图片到本地路径
+                        urllib.request.urlretrieve(fig_url, local_path)
+
+                        # 替换为本地路径
+                        fig["figure_path"] = str(local_path)
+                        logger.info(f"图片 {fig_url} 已下载至 {local_path}")
+                    except Exception as e:
+                        logger.warning(f"图片下载失败: {fig_url} -> {e}")
+                        fig["figure_path"] = ""  # 或者保留 URL，根据你的需求
+                       
+        # Step 7: 生成海报代码
+        # args.tmp_dir 现在是 request_temp_dir
+        pptx_save_path = request_temp_dir / "poster.pptx"
+
+        poster_code = generate_poster_code(
+            panel_arrangement_inches,
+            text_arrangement_inches,
+            figure_arrangement_inches,
+            presentation_object_name='poster_presentation',
+            slide_object_name='poster_slide',
+            utils_functions=utils_functions,
+            slide_width=width_inch,
+            slide_height=height_inch,
+            img_path=None, # 假设没有直接嵌入的图片路径
+            save_path=str(pptx_save_path), # 需要是字符串路径
+            visible=False,
+            content=bullet_content,
+            theme=theme,
+            tmp_dir=str(request_temp_dir), # tmp_dir 也需要是字符串
+        )
+
+        output, err = run_code(poster_code)
+        if err is not None:
+            logger.error(f"生成 PowerPoint 出错: {err}")
+            raise HTTPException(status_code=500, detail=f'生成 PowerPoint 失败: {err}')
+
+        # Step 8: 定义输出目录（最终存储 PPTX 和图像的目录）
+        # 你可以根据需求更改这个目录，例如，可以使其成为请求临时目录的子目录，
+        # 这样它也会被后台任务清理。或者，如果希望永久保存，则放在其他位置。
+        # 这里为了演示，我们放在一个名为 'generated_posters' 的独立目录中
+        output_dir = Path("generated_posters") / poster_name
+        output_dir.mkdir(parents=True, exist_ok=True) # 确保父目录也存在
+        logger.info(f"海报最终输出目录: {output_dir.absolute()}")
+
+
+        # Step 9: 重命名并保存 PPTX 文件到最终输出目录
+        final_pptx_path = output_dir / f'{poster_name}.pptx'
+        try:
+            # 使用 shutil.move 来移动文件
+            shutil.move(str(pptx_save_path), str(final_pptx_path))
+            logger.info(f'海报 PowerPoint 已保存到 {final_pptx_path}')
+        except Exception as move_e:
+            logger.error(f"移动 PPTX 文件失败: {move_e}")
+            raise HTTPException(status_code=500, detail=f"保存 PPTX 文件失败: {move_e}")
+
+        """
+        # Step 10: 将 PPTX 转换为图像
+        # 图像会保存到 final_pptx_path 的同级目录 (output_dir)
+        try:
+            ppt_to_images(str(final_pptx_path), str(output_dir))
+            logger.info(f'海报图像已保存到 {output_dir}')
+        except Exception as img_e:
+            logger.error(f"将 PPTX 转换为图像失败: {img_e}")
+            raise HTTPException(status_code=500, detail=f"生成海报图像失败: {img_e}")
+
+        # 构建成功响应
+        return JSONResponse(content={
+            "message": "海报生成成功",
+            "pptx_path": str(final_pptx_path),
+            "output_image_dir": str(output_dir),
+            "poster_name": poster_name
+        }, status_code=200) """
+
+    except HTTPException:
+        raise # 重新抛出 HTTPException，因为它们已经被处理了
+    except Exception as e:
+        logger.error("处理海报生成请求时出错", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"海报生成失败: {str(e)}")
+
+# 本地运行入口
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=44462)
+
