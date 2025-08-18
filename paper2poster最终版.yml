@@ -1,0 +1,3221 @@
+app:
+  description: paper2poster 尝试从代码包移植到dify
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 最终版
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.0.29@9e17ae8073fe53c282e9dc411e76a3cc52f8e794e4cc2499d204502086871c53
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/json_process:0.0.2@dde6d7b676ccdcea89206d29232181a840170c19277d3d978e27cd1e3c92c707
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.27@4bb3f3eb6149b01f92aa6038a6bb074cc4224b8c015f54c888e5c5a30fc1ab50
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: http-request
+      id: 1750389553183-source-1750391187013-target
+      selected: false
+      source: '1750389553183'
+      sourceHandle: source
+      target: '1750391187013'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: tool
+      id: 1750391187013-source-1750919912228-target
+      selected: false
+      source: '1750391187013'
+      sourceHandle: source
+      target: '1750919912228'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1750989908607'
+        sourceType: iteration-start
+        targetType: llm
+      id: 1750989908607start-source-1750989935259-target
+      selected: false
+      source: 1750989908607start
+      sourceHandle: source
+      target: '1750989935259'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1750989908607'
+        sourceType: llm
+        targetType: code
+      id: 1750989935259-source-1750997190350-target
+      selected: false
+      source: '1750989935259'
+      sourceHandle: source
+      target: '1750997190350'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1751340061667'
+        sourceType: iteration-start
+        targetType: http-request
+      id: 1751340061667start-source-1751349836515-target
+      selected: false
+      source: 1751340061667start
+      sourceHandle: source
+      target: '1751349836515'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1751340061667'
+        sourceType: http-request
+        targetType: llm
+      id: 1751349836515-source-1751349863753-target
+      selected: false
+      source: '1751349836515'
+      sourceHandle: source
+      target: '1751349863753'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: tool
+      id: 1750391187013-source-1751440649722-target
+      selected: false
+      source: '1750391187013'
+      sourceHandle: source
+      target: '1751440649722'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: code
+      id: 1750919912228-source-1751340406274-target
+      selected: false
+      source: '1750919912228'
+      sourceHandle: source
+      target: '1751340406274'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: code
+      id: 1751440649722-source-1751440936103-target
+      selected: false
+      source: '1751440649722'
+      sourceHandle: source
+      target: '1751440936103'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: iteration
+      id: 1751340406274-source-1751340061667-target
+      selected: false
+      source: '1751340406274'
+      sourceHandle: source
+      target: '1751340061667'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1751619680318-source-1751595483415-target
+      selected: false
+      source: '1751619680318'
+      sourceHandle: source
+      target: '1751595483415'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1751595483415-source-1751875441262-target
+      selected: false
+      source: '1751595483415'
+      sourceHandle: source
+      target: '1751875441262'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1751875441262-source-1751877418051-target
+      selected: false
+      source: '1751875441262'
+      sourceHandle: source
+      target: '1751877418051'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1751877418051-source-1752128946715-target
+      selected: false
+      source: '1751877418051'
+      sourceHandle: source
+      target: '1752128946715'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: iteration
+      id: 1752559970997-source-1752564134178-target
+      selected: false
+      source: '1752559970997'
+      sourceHandle: source
+      target: '1752564134178'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: llm
+      id: 1750391187013-source-1752482167638-target
+      selected: false
+      source: '1750391187013'
+      sourceHandle: source
+      target: '1752482167638'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: iteration
+        targetType: llm
+      id: 1751340061667-source-1751340553871-target
+      selected: false
+      source: '1751340061667'
+      sourceHandle: source
+      target: '1751340553871'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 1751340553871-source-1751619680318-target
+      selected: false
+      source: '1751340553871'
+      sourceHandle: source
+      target: '1751619680318'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 1752482167638-source-1752628782586-target
+      selected: false
+      source: '1752482167638'
+      sourceHandle: source
+      target: '1752628782586'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1752628782586-source-1751340553871-target
+      selected: false
+      source: '1752628782586'
+      sourceHandle: source
+      target: '1751340553871'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1752564134178'
+        sourceType: iteration-start
+        targetType: code
+      id: 1752564134178start-source-1752632247397-target
+      selected: false
+      source: 1752564134178start
+      sourceHandle: source
+      target: '1752632247397'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1752564134178'
+        sourceType: code
+        targetType: llm
+      id: 1752632247397-source-1752634762436-target
+      selected: false
+      source: '1752632247397'
+      sourceHandle: source
+      target: '1752634762436'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: end
+      id: 1752653114464-source-1750910620664-target
+      selected: false
+      source: '1752653114464'
+      sourceHandle: source
+      target: '1750910620664'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1752654556516-source-1752653114464-target
+      selected: false
+      source: '1752654556516'
+      sourceHandle: source
+      target: '1752653114464'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1752562605694-source-1752736559319-target
+      selected: false
+      source: '1752562605694'
+      sourceHandle: source
+      target: '1752736559319'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1752736559319-source-1752736572310-target
+      selected: false
+      source: '1752736559319'
+      sourceHandle: source
+      target: '1752736572310'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 1752736572310-source-1752559970997-target
+      selected: false
+      source: '1752736572310'
+      sourceHandle: source
+      target: '1752559970997'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: iteration
+        targetType: code
+      id: 1752564134178-source-1752736822426-target
+      selected: false
+      source: '1752564134178'
+      sourceHandle: source
+      target: '1752736822426'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1752736822426-source-1752654556516-target
+      selected: false
+      source: '1752736822426'
+      sourceHandle: source
+      target: '1752654556516'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1752564134178'
+        sourceType: llm
+        targetType: llm
+      id: 1752634762436-source-1752817972114-target
+      selected: false
+      source: '1752634762436'
+      sourceHandle: source
+      target: '1752817972114'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1752128946715-source-1753349694921-target
+      source: '1752128946715'
+      sourceHandle: source
+      target: '1753349694921'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1753349694921-source-1753349880726-target
+      source: '1753349694921'
+      sourceHandle: source
+      target: '1753349880726'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1753349880726-source-1752562605694-target
+      source: '1753349880726'
+      sourceHandle: source
+      target: '1752562605694'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1751440936103-source-1753356102389-target
+      source: '1751440936103'
+      sourceHandle: source
+      target: '1753356102389'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1753356102389-source-1751340553871-target
+      source: '1753356102389'
+      sourceHandle: source
+      target: '1751340553871'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: pdf
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: pdf
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: bullet
+          max_length: 5
+          options: []
+          required: false
+          type: file-list
+          variable: bullet
+      height: 114
+      id: '1750389553183'
+      position:
+        x: 30
+        y: 305
+      positionAbsolute:
+        x: 30
+        y: 305
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - file:
+            - '1750389553183'
+            - pdf
+            id: key-value-109
+            key: file
+            type: file
+            value: ''
+          type: form-data
+        desc: 调用docling
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          connect: 60
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+          read: 60
+          write: 60
+        title: HTTP 请求
+        type: http-request
+        url: http://10.239.121.28:44461/extract_pdf_from_upload/
+        variables: []
+      height: 167
+      id: '1750391187013'
+      position:
+        x: 334
+        y: 305
+      positionAbsolute:
+        x: 334
+        y: 305
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1752564134178'
+          - output
+          variable: bullet
+        selected: false
+        title: 结束
+        type: end
+      height: 88
+      id: '1750910620664'
+      position:
+        x: 9961.816956176113
+        y: 569.7789212812471
+      positionAbsolute:
+        x: 9961.816956176113
+        y: 569.7789212812471
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: 文本
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: JSON data
+            ja_JP: JSON data
+            pt_BR: JSON数据
+            zh_Hans: JSON数据
+          label:
+            en_US: JSON data
+            ja_JP: JSON data
+            pt_BR: JSON data
+            zh_Hans: JSON数据
+          llm_description: JSON data to be processed
+          max: null
+          min: null
+          name: content
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: JSON fields to be parsed
+            ja_JP: JSON fields to be parsed
+            pt_BR: JSON fields to be parsed
+            zh_Hans: 需要解析的 JSON 字段
+          label:
+            en_US: JSON filter
+            ja_JP: JSON filter
+            pt_BR: JSON filter
+            zh_Hans: JSON解析对象
+          llm_description: JSON fields to be parsed
+          max: null
+          min: null
+          name: json_filter
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 1
+          form: form
+          human_description:
+            en_US: Ensure the JSON output is ASCII encoded
+            ja_JP: Ensure the JSON output is ASCII encoded
+            pt_BR: Ensure the JSON output is ASCII encoded
+            zh_Hans: 确保输出的 JSON 是 ASCII 编码
+          label:
+            en_US: Ensure ASCII
+            ja_JP: Ensure ASCII
+            pt_BR: Ensure ASCII
+            zh_Hans: 确保 ASCII
+          llm_description: ''
+          max: null
+          min: null
+          name: ensure_ascii
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        params:
+          content: ''
+          ensure_ascii: ''
+          json_filter: ''
+        provider_id: langgenius/json_process/json_process
+        provider_name: langgenius/json_process/json_process
+        provider_type: builtin
+        selected: false
+        title: JSON 解析
+        tool_configurations:
+          ensure_ascii: 1
+        tool_description: 一个解析JSON对象的工具
+        tool_label: JSON 解析
+        tool_name: parse
+        tool_parameters:
+          content:
+            type: mixed
+            value: '{{#1750391187013.body#}}'
+          json_filter:
+            type: mixed
+            value: body
+        type: tool
+      height: 116
+      id: '1750919171642'
+      position:
+        x: 497
+        y: 1.9895196601282805e-13
+      positionAbsolute:
+        x: 497
+        y: 1.9895196601282805e-13
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: 图片url
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: JSON data
+            ja_JP: JSON data
+            pt_BR: JSON数据
+            zh_Hans: JSON数据
+          label:
+            en_US: JSON data
+            ja_JP: JSON data
+            pt_BR: JSON data
+            zh_Hans: JSON数据
+          llm_description: JSON data to be processed
+          max: null
+          min: null
+          name: content
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: JSON fields to be parsed
+            ja_JP: JSON fields to be parsed
+            pt_BR: JSON fields to be parsed
+            zh_Hans: 需要解析的 JSON 字段
+          label:
+            en_US: JSON filter
+            ja_JP: JSON filter
+            pt_BR: JSON filter
+            zh_Hans: JSON解析对象
+          llm_description: JSON fields to be parsed
+          max: null
+          min: null
+          name: json_filter
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 1
+          form: form
+          human_description:
+            en_US: Ensure the JSON output is ASCII encoded
+            ja_JP: Ensure the JSON output is ASCII encoded
+            pt_BR: Ensure the JSON output is ASCII encoded
+            zh_Hans: 确保输出的 JSON 是 ASCII 编码
+          label:
+            en_US: Ensure ASCII
+            ja_JP: Ensure ASCII
+            pt_BR: Ensure ASCII
+            zh_Hans: 确保 ASCII
+          llm_description: ''
+          max: null
+          min: null
+          name: ensure_ascii
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        params:
+          content: ''
+          ensure_ascii: ''
+          json_filter: ''
+        provider_id: langgenius/json_process/json_process
+        provider_name: langgenius/json_process/json_process
+        provider_type: builtin
+        selected: false
+        title: JSON 解析2
+        tool_configurations:
+          ensure_ascii: 1
+        tool_description: 一个解析JSON对象的工具
+        tool_label: JSON 解析
+        tool_name: parse
+        tool_parameters:
+          content:
+            type: mixed
+            value: '{{#1750391187013.body#}}'
+          json_filter:
+            type: mixed
+            value: $.files[*].url
+        type: tool
+      height: 116
+      id: '1750919912228'
+      position:
+        x: 849.4067311427052
+        y: 541
+      positionAbsolute:
+        x: 849.4067311427052
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import re\n\ndef main(markdown_input: str) -> dict:\n    \"\"\"\n \
+          \   将 markdown_input 文本切分为多个章节，并将每个章节的标题与内容组合成字符串返回。\n    \"\"\"\n    sections\
+          \ = []\n\n    # 更鲁棒的正则表达式\n    regex_pattern = r'(?m)^\\s*(?P<level>#+)\\\
+          s+(?P<title>[^\\n]+)\\n(?P<content>.*?)(?=\\n\\s*#|\\Z)'\n    matches =\
+          \ list(re.finditer(regex_pattern, markdown_input, flags=re.DOTALL))\n\n\
+          \    if matches:\n        first_heading_index = matches[0].start()\n   \
+          \     if first_heading_index > 0:\n            preface = markdown_input[:first_heading_index].strip()\n\
+          \            if preface:\n                sections.append(f\"Abstract/Introduction\
+          \ (Document Start)\\n\\n{preface}\")\n    else:\n        return {\n    \
+          \        \"result\": [markdown_input.strip()]\n        }\n\n    for match\
+          \ in matches:\n        title = match.group(\"title\").strip()\n        content\
+          \ = match.group(\"content\").strip()\n        sections.append(f\"{title}\\\
+          n\\n{content}\")\n\n    return {\n        \"result\": sections\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1750919171642'
+          - text
+          variable: markdown_input
+      height: 52
+      id: '1750922490233'
+      position:
+        x: 1034.2783597093892
+        y: -11.880405039788968
+      positionAbsolute:
+        x: 1034.2783597093892
+        y: -11.880405039788968
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: 文本排版-
+        error_handle_mode: terminated
+        height: 210
+        is_parallel: false
+        iterator_selector:
+        - '1750922490233'
+        - result
+        output_selector:
+        - '1750997190350'
+        - result_json
+        output_type: array[object]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1750989908607start
+        title: 迭代
+        type: iteration
+        width: 812
+      height: 210
+      id: '1750989908607'
+      position:
+        x: 1311.3601559637673
+        y: -36.25582081208046
+      positionAbsolute:
+        x: 1311.3601559637673
+        y: -36.25582081208046
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 812
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1750989908607start
+      parentId: '1750989908607'
+      position:
+        x: 60
+        y: 81
+      positionAbsolute:
+        x: 1371.3601559637673
+        y: 44.74417918791954
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1750989908607'
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen3-32b
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: f78f2565-5c37-4449-bae7-c1074fbd4def
+          role: system
+          text: "{\n    \"description\": \"You are a document section classifier and\
+            \ summarizer for academic posters. Your SOLE output MUST be a valid JSON\
+            \ object, and NOTHING ELSE. No commentary, no explanations, no thinking\
+            \ process, no conversational text. ONLY THE JSON.\",\n    \"instruction_set\"\
+            : [\n        \"You will receive a markdown fragment (one chunk of a long\
+            \ paper) and your task is to identify:\",\n        \"1. Which **section\
+            \ title** it belongs to (at most 3 words),\",\n        \"2. Optionally,\
+            \ the **subsection** (if applicable),\",\n        \"3. Refine the text\
+            \ content by removing footers, citations, and unwanted symbols (`~~...~~`),\"\
+            ,\n        \"4. Return your output in JSON format for use in poster generation.\"\
+            ,\n        \"5.The first section title must be named with word \"title\"\
+            (not the content) and conclude what title and author is in content.\n\
+            \        \"Do NOT summarize or hallucinate missing information. Just classify\
+            \ and clean this chunk only.\",\n        \"Your entire output MUST be\
+            \ a valid JSON object, adhering strictly to the 'Output' example. NO additional\
+            \ text, commentary, or thinking process is allowed before, during, or\
+            \ after the JSON.\"\n    ],\n    \"example_output\": {\n        \"title\"\
+            : \"Section Title\",\n        \"content\": \"Cleaned content from the\
+            \ input chunk.\"\n    }\n}\nInput：\n{{{#1750989908607.item#}}}"
+        selected: false
+        title: LLM 3
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: '1750989935259'
+      parentId: '1750989908607'
+      position:
+        x: 204
+        y: 60
+      positionAbsolute:
+        x: 1515.3601559637673
+        y: 23.744179187919542
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        code: "import json\nimport re\n\ndef main(llm_output_raw: str) -> dict:\n\
+          \    \"\"\"\n    提取最后一个 </think> 后面的 JSON 内容。\n    如果没有 </think>，退而解析所有合法\
+          \ JSON 并选最后一个。\n    总是返回一个包含 'result_json' 的字典。\n    \"\"\"\n\n    output_str\
+          \ = llm_output_raw.strip()\n    parsed_json_result = {}\n\n    # 尝试从最后一个\
+          \ </think> 后提取内容\n    if \"</think>\" in output_str:\n        after_think\
+          \ = output_str.rsplit(\"</think>\", 1)[-1].strip()\n    else:\n        after_think\
+          \ = output_str\n\n    # 尝试匹配 Markdown 代码块\n    code_block_match = re.search(r'```(?:json)?\\\
+          s*(\\{.*?\\})\\s*```', after_think, re.DOTALL)\n    if code_block_match:\n\
+          \        try:\n            parsed_json_result = json.loads(code_block_match.group(1))\n\
+          \            return {\"result_json\": parsed_json_result}\n        except\
+          \ json.JSONDecodeError:\n            pass\n\n    # 查找所有 {...} 结构\n    all_json_candidates\
+          \ = re.findall(r'\\{.*?\\}', after_think, re.DOTALL)\n\n    for candidate\
+          \ in all_json_candidates:\n        try:\n            parsed_json_result\
+          \ = json.loads(candidate)\n            break  # 成功解析就返回\n        except\
+          \ json.JSONDecodeError:\n            continue\n\n    return {\"result_json\"\
+          : parsed_json_result}"
+        code_language: python3
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1750989908607'
+        outputs:
+          result_json:
+            children: null
+            type: object
+        selected: false
+        title: 代码执行 2
+        type: code
+        variables:
+        - value_selector:
+          - '1750989935259'
+          - text
+          variable: llm_output_raw
+      height: 52
+      id: '1750997190350'
+      parentId: '1750989908607'
+      position:
+        x: 527.1521123925145
+        y: 65
+      positionAbsolute:
+        x: 1838.5122683562818
+        y: 28.744179187919542
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        desc: 依次解析图片
+        error_handle_mode: terminated
+        height: 310
+        is_parallel: false
+        iterator_selector:
+        - '1751340406274'
+        - output_array
+        output_selector:
+        - '1751349863753'
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1751340061667start
+        title: 迭代 2
+        type: iteration
+        width: 812
+      height: 310
+      id: '1751340061667'
+      position:
+        x: 1880.5762595652886
+        y: 474.44977333477163
+      positionAbsolute:
+        x: 1880.5762595652886
+        y: 474.44977333477163
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 812
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1751340061667start
+      parentId: '1751340061667'
+      position:
+        x: 60
+        y: 99.5
+      positionAbsolute:
+        x: 1940.5762595652886
+        y: 573.9497733347716
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        code: "import json\n\ndef main(input_string: str) -> dict:\n    \"\"\"\n \
+          \   将输入字符串解析为 Python 列表。\n    如果输入是合法的 JSON 数组字符串，则直接解析。\n    如果输入是一个普通的字符串（例如单个\
+          \ URL），则将其包装成一个单元素列表。\n\n    Args:\n        input_string (str): 一个包含 JSON\
+          \ 格式数组的字符串，\n                            例如: \"[\\\"item1\\\", \\\"item2\\\
+          \"]\"，\n                            或者一个普通的字符串，例如: \"http://example.com/image.png\"\
+          。\n\n    Returns:\n        dict: 包含解析后（或包装后）列表的字典，键名为 \"output_array\"。\n\
+          \    \"\"\"\n    try:\n        # 尝试将 input_string 作为 JSON 数组解析\n       \
+          \ parsed_list = json.loads(input_string)\n        # 如果解析成功，确保它确实是一个列表\n\
+          \        if isinstance(parsed_list, list):\n            return {\n     \
+          \           \"output_array\": parsed_list\n            }\n        else:\n\
+          \            # 如果解析成功但不是列表（例如解析出数字、布尔值等），\n            # 则将其视为单个元素，并包装成列表\n\
+          \            return {\n                \"output_array\": [input_string]\n\
+          \            }\n    except json.JSONDecodeError:\n        # 如果解析失败（因为它不是\
+          \ JSON 格式，而是一个普通字符串，比如你的URL）\n        # 将原始 input_string 包装成一个单元素列表\n  \
+          \      return {\n            \"output_array\": [input_string]\n        }\n\
+          \    except Exception as e:\n        # 捕获其他可能的异常\n        return {\n   \
+          \         \"output_array\": [],\n            \"error\": f\"An unexpected\
+          \ error occurred: {str(e)}\"\n        }"
+        code_language: python3
+        desc: list转json array
+        outputs:
+          output_array:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行 5
+        type: code
+        variables:
+        - value_selector:
+          - '1750919912228'
+          - text
+          variable: input_string
+      height: 80
+      id: '1751340406274'
+      position:
+        x: 1530
+        y: 605
+      positionAbsolute:
+        x: 1530
+        y: 605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1752482167638'
+          - text
+        desc: 根据全文和图片内容筛选图片和表格？
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 57a1e06e-a159-46a7-839d-e2a93886ede6
+          role: system
+          text: "\n你需要根据图片的内容：{{#1751340061667.output#}}；\n和文章的全部文字及对应标题（section之后）：{{#context#}}，\n\
+            判断哪些图片和表格应该被保留，用于生成学术海报。你需要考虑以下几个因素：\n\n图片和表格的数量：海报通常会包含有限数量的图表，你需要保证选择的图表数量符合这一标准。\n\
+            \n图片和表格的内容相关性：你需要选择那些能够重点突出，与文章内容高度相关，有代表性的图表。\n\n图表与所属章节匹配：将保留下来的图片与其在论文全文中所属的章节标题（title）进行匹配。确保章节标题和提供的标题一致\n\
+            \n计算并累加文本比例 (tp)：tp 是一个浮点数，表示该章节的文本内容占全文总文本内容的比例。tp总和为1.\n\n请严格按照以下 JSON\
+            \ 格式输出，不需要输出你的思考部分，只输出 JSON。所有 key 必须是英文。\n\n输出格式:\n一个 JSON 对象，其中：\n\n\
+            键 (Key)：是论文章节的名称（title）。\n\n值 (Value)：是一个对象，包含以下内容：\n\n如果该章节包含一个要保留的图片，值为\
+            \ {\"image\": image_id, \"tp\": text_proportion}，其中 image_id 是该图片在图片解析内容中的数字序号（数字类型），text_proportion\
+            \ 是该章节文本内容累加后的 tp（浮点数）。\n\n如果该章节没有保留的图片，值为 {\"tp\": text_proportion}。\n\
+            \n请确保 image_id 是数字类型。每个章节最多只保留一张图片。即使没有图片，只要有tp也应该保留。\n\n请确保title和提供的title一致\n\
+            \n请确保保留图片不超过三张\n\n**重要提示：请只输出JSON对象，不要在JSON前后添加任何额外文字、解释、注释或Markdown代码块标记（例如\
+            \ ```json 或 ```）。**\n\n输出示例（只表示结构，无关内容）：\n{\n  \"Introduction\": {\"tp\"\
+            : 0.12},  // 例如，如果最终的Introduction章节对应原始的Introduction章节\n  \"Methods\"\
+            : {\"image\": 2, \"tp\": 0.25}, // 例如，如果最终的Methods章节对应原始的Methods章节\n \
+            \ \"Results\": {\"image\": 3, \"tp\": 0.30}, // 例如，如果最终的Results章节对应原始的Results章节\n\
+            \  \"Discussion\": {\"image\": 1, \"tp\": 0.20}, // 例如，如果最终的Discussion章节对应原始的Discussion章节\n\
+            \  \"Conclusion\": {\"tp\": 0.13} // 例如，如果最终的Conclusion章节对应原始的Conclusion章节\n\
+            }"
+        selected: false
+        structured_output_enabled: false
+        title: LLM 3-2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 116
+      id: '1751340553871'
+      position:
+        x: 3568.4284603174883
+        y: 541
+      positionAbsolute:
+        x: 3568.4284603174883
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - file:
+            - '1751340061667'
+            - item
+            id: key-value-26
+            key: image
+            type: file
+            value: ''
+          type: form-data
+        desc: ''
+        headers: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1751340061667'
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 2
+        type: http-request
+        url: '{{#1751340061667.item#}}'
+        variables: []
+      height: 125
+      id: '1751349836515'
+      parentId: '1751340061667'
+      position:
+        x: 174.13384277007708
+        y: 118.58361610484872
+      positionAbsolute:
+        x: 2054.7101023353657
+        y: 593.0333894396204
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1751340061667'
+        model:
+          completion_params: {}
+          mode: chat
+          name: qvq-max-latest
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: a607376d-8556-47c9-95c4-eae5c5a2569a
+          role: system
+          text: 识别上传的图片内容
+        - role: user
+          text: "[\n  {\n    \"role\": \"user\",\n    \"content\": \"请总结这段论文内容\"\n\
+            \  }\n]"
+        selected: false
+        title: LLM 4
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector: []
+          enabled: true
+      height: 88
+      id: '1751349863753'
+      parentId: '1751340061667'
+      position:
+        x: 508
+        y: 78.5
+      positionAbsolute:
+        x: 2388.5762595652886
+        y: 552.9497733347716
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        desc: 获得图片data
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: JSON data
+            ja_JP: JSON data
+            pt_BR: JSON数据
+            zh_Hans: JSON数据
+          label:
+            en_US: JSON data
+            ja_JP: JSON data
+            pt_BR: JSON data
+            zh_Hans: JSON数据
+          llm_description: JSON data to be processed
+          max: null
+          min: null
+          name: content
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: JSON fields to be parsed
+            ja_JP: JSON fields to be parsed
+            pt_BR: JSON fields to be parsed
+            zh_Hans: 需要解析的 JSON 字段
+          label:
+            en_US: JSON filter
+            ja_JP: JSON filter
+            pt_BR: JSON filter
+            zh_Hans: JSON解析对象
+          llm_description: JSON fields to be parsed
+          max: null
+          min: null
+          name: json_filter
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 1
+          form: form
+          human_description:
+            en_US: Ensure the JSON output is ASCII encoded
+            ja_JP: Ensure the JSON output is ASCII encoded
+            pt_BR: Ensure the JSON output is ASCII encoded
+            zh_Hans: 确保输出的 JSON 是 ASCII 编码
+          label:
+            en_US: Ensure ASCII
+            ja_JP: Ensure ASCII
+            pt_BR: Ensure ASCII
+            zh_Hans: 确保 ASCII
+          llm_description: ''
+          max: null
+          min: null
+          name: ensure_ascii
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        params:
+          content: ''
+          ensure_ascii: ''
+          json_filter: ''
+        provider_id: langgenius/json_process/json_process
+        provider_name: langgenius/json_process/json_process
+        provider_type: builtin
+        selected: false
+        title: JSON 解析3
+        tool_configurations:
+          ensure_ascii: 1
+        tool_description: 一个解析JSON对象的工具
+        tool_label: JSON 解析
+        tool_name: parse
+        tool_parameters:
+          content:
+            type: mixed
+            value: '{{#1750391187013.body#}}'
+          json_filter:
+            type: mixed
+            value: $.files
+        type: tool
+      height: 116
+      id: '1751440649722'
+      position:
+        x: 1530
+        y: 823
+      positionAbsolute:
+        x: 1530
+        y: 823
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(input_string: str) -> dict:\n    \"\"\"\n \
+          \   将输入字符串解析为 Python 列表。\n    如果输入是合法的 JSON 数组字符串，则直接解析。\n    如果输入是一个普通的字符串（例如单个\
+          \ URL），则将其包装成一个单元素列表。\n\n    Args:\n        input_string (str): 一个包含 JSON\
+          \ 格式数组的字符串，\n                            例如: \"[\\\"item1\\\", \\\"item2\\\
+          \"]\"，\n                            或者一个普通的字符串，例如: \"http://example.com/image.png\"\
+          。\n\n    Returns:\n        dict: 包含解析后（或包装后）列表的字典，键名为 \"output_array\"。\n\
+          \    \"\"\"\n    try:\n        # 尝试将 input_string 作为 JSON 数组解析\n       \
+          \ parsed_list = json.loads(input_string)\n        # 如果解析成功，确保它确实是一个列表\n\
+          \        if isinstance(parsed_list, list):\n            return {\n     \
+          \           \"output_array\": parsed_list # 返回解析后的列表\n            }\n  \
+          \      else:\n            # 如果解析成功但不是列表（例如解析出数字、布尔值等），\n            # 则将其视为单个元素，并包装成列表\n\
+          \            return {\n                \"output_array\": [input_string]\
+          \ # 原始字符串作为单元素列表\n            }\n    except json.JSONDecodeError:\n    \
+          \    # 如果解析失败（因为它不是 JSON 格式，而是一个普通字符串，比如你的URL）\n        # 将原始 input_string\
+          \ 包装成一个单元素列表\n        return {\n            \"output_array\": [input_string]\
+          \ # 原始字符串作为单元素列表\n        }\n    except Exception as e:\n        # 捕获其他可能的异常\n\
+          \        return {\n            \"output_array\": [],\n            \"error\"\
+          : f\"An unexpected error occurred: {str(e)}\"\n        }"
+        code_language: python3
+        desc: 图片的详细信息
+        outputs:
+          output_array:
+            children: null
+            type: array[object]
+        selected: false
+        title: 代码执行6
+        type: code
+        variables:
+        - value_selector:
+          - '1751440649722'
+          - text
+          variable: input_string
+      height: 80
+      id: '1751440936103'
+      position:
+        x: 2358
+        y: 809
+      positionAbsolute:
+        x: 2358
+        y: 809
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(data_list: list) -> list:\n    \"\"\"\n   \
+          \ 计算输入列表中每个字典的'content'字段长度占总长度的比例，并添加'tp'键。\n\n    Args:\n        data_list\
+          \ (list): 包含待处理字典的列表，每个字典预期包含'content'键。\n\n    Returns:\n        list:\
+          \ 处理后的列表，每个字典元素包含计算出的'tp'值。\n    \"\"\"\n    total_content_length = 0\n\
+          \    processed_list = []\n    # 首先计算所有有效content的总长度\n    for item in data_list:\n\
+          \        if \"content\" in item and item[\"content\"] is not None:\n   \
+          \         total_content_length += len(item[\"content\"])\n\n    # 遍历每个元素，计算并添加tp值\n\
+          \    for item in data_list:\n        if \"content\" in item and item[\"\
+          content\"] is not None:\n            # 计算比例并保留两位小数\n            item[\"\
+          tp\"] = round(len(item[\"content\"]) / total_content_length, 2)\n      \
+          \  else:\n            # 对于没有content或content为None的元素，tp设置为0.00\n        \
+          \    item[\"tp\"] = 0.00\n        if item[\"tp\"] > 0:\n            processed_list.append(item)\n\
+          \    total_content_length = round(total_content_length)       \n    return\
+          \ {\"data_list\":processed_list,\n            \"text_len\":total_content_length\n\
+          \    }"
+        code_language: python3
+        desc: 计算tp
+        outputs:
+          data_list:
+            children: null
+            type: array[object]
+          text_len:
+            children: null
+            type: number
+        selected: false
+        title: 代码执行 7
+        type: code
+        variables:
+        - value_selector:
+          - '1750989908607'
+          - output
+          variable: data_list
+      height: 80
+      id: '1751506607691'
+      position:
+        x: 2281.8640222651343
+        y: 82.1390557961924
+      positionAbsolute:
+        x: 2281.8640222651343
+        y: 82.1390557961924
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\n# 假设这些变量是 Dify 代码节点直接传入的，无需 inputs.get()\n# text_and_image\
+          \ 是一个字符串，需要解析\n# total_text_len 是一个数字\n# image_data 现在直接是那个列表（即原 image_data[\"\
+          output_array\"] 的内容）\n# text_and_image_str = text_and_image # Dify 会直接传入变量，这里只是为了和之前的代码变量名一致\n\
+          # image_data_list = image_data # Dify 会直接传入变量，这里只是为了和之前的代码变量名一致\n\n\ndef\
+          \ main(text_and_image: str, text_len: int, image_data: list):\n    \"\"\"\
+          \n    Dify 代码节点的主函数，用于转换输入格式。\n\n    Args:\n        text_and_image (str):\
+          \ 包含 section 名称和 tp 值的 JSON 字符串。\n        text_len (int): 总文本长度。\n     \
+          \   image_data (list): 包含图片详细信息的列表，每个元素是一个字典。\n\n    Returns:\n        dict:\
+          \ 包含 'paper_panels' 列表的字典。\n    \"\"\"\n\n    # 1. 解析 text_and_image 字符串\n\
+          \    try:\n        text_and_image_data = json.loads(text_and_image)\n  \
+          \  except json.JSONDecodeError:\n        raise ValueError(\"无法解析 text_and_image\
+          \ 字符串为 JSON。\")\n\n    # 2. 提取 image_data 中的图片尺寸信息，并构建一个方便查找的字典\n    image_dimensions\
+          \ = {}\n    for img in image_data: # 直接遍历 image_data 列表\n        image_dimensions[str(img.get(\"\
+          id\"))] = {\n            \"width\": img.get(\"width\"),\n            \"\
+          height\": img.get(\"height\")\n        }\n\n    # 3. 初始化 paper_panels 列表\n\
+          \    paper_panels = []\n    panel_id_counter = 0\n\n    # 4. 遍历 text_and_image_data\
+          \ 来构建 panel\n    for section_name, section_info in text_and_image_data.items():\n\
+          \        lens = text_len * section_info.get(\"tp\", 0.0)\n        panel\
+          \ = {\n            \"panel_id\": panel_id_counter,\n            \"section_name\"\
+          : section_name,\n            \"tp\": section_info.get(\"tp\", 0.0),  # 确保tp存在，默认为0.0\n\
+          \            \"text_len\": lens,  # text_len 对所有 panel 都是一样的\n         \
+          \   \"gp\": 0.0,  # 初始值，需要计算\n            \"figure_size\": 0.0,  # 初始值，需要计算\n\
+          \            \"figure_aspect\": 0.0  # 初始值，需要计算\n        }\n\n        #\
+          \ 检查是否有图像与当前 section_name 相关联\n        image_id_in_section = section_info.get(\"\
+          image\")\n\n        if image_id_in_section:\n            img_id_str = str(image_id_in_section)\n\
+          \            if img_id_str in image_dimensions:\n                img_width\
+          \ = image_dimensions[img_id_str].get(\"width\")\n                img_height\
+          \ = image_dimensions[img_id_str].get(\"height\")\n\n                if img_width\
+          \ is not None and img_height is not None and img_width > 0 and img_height\
+          \ > 0:\n                    # 计算 gp (图形占比) - 示例计算，可能需要调整比例因子\n         \
+          \           # 你可能需要根据实际需求调整 gp 的计算方式\n                    panel[\"gp\"]\
+          \ = (img_width * img_height) / (text_len * 1000)\n\n                   \
+          \ # 计算 figure_size (图形面积)\n                    panel[\"figure_size\"] =\
+          \ float(img_width * img_height)\n\n                    # 计算 figure_aspect\
+          \ (图形宽高比)\n                    panel[\"figure_aspect\"] = float(img_width\
+          \ / img_height)\n                else:\n                    # 如果图片尺寸无效，则将\
+          \ gp, figure_size, figure_aspect 设为0\n                    panel[\"gp\"]\
+          \ = 0.0\n                    panel[\"figure_size\"] = 0.0\n            \
+          \        panel[\"figure_aspect\"] = 0.0\n            else:\n           \
+          \     # 如果 section 中有 image ID 但在 image_data 中找不到\n                panel[\"\
+          gp\"] = 0.0\n                panel[\"figure_size\"] = 0.0\n            \
+          \    panel[\"figure_aspect\"] = 0.0\n        else:\n            # 如果 section_info\
+          \ 中没有 'image' 字段\n            panel[\"gp\"] = 0.0\n            panel[\"\
+          figure_size\"] = 0.0\n            panel[\"figure_aspect\"] = 0.0\n\n   \
+          \     paper_panels.append(panel)\n        panel_id_counter += 1\n\n    #\
+          \ 返回结果\n    return {\n        \"paper_panels\": paper_panels\n    }\n\n\
+          # 在 Dify 代码节点中，你需要确保你的主逻辑被调用，并将其结果赋值给 outputs\n# Dify 会自动将 main 函数的返回值作为\
+          \ outputs\n# 例如，如果你的代码节点将 \"text_and_image\", \"text_len\", \"image_data\"\
+          \ 作为输入，\n# Dify 会自动将它们作为参数传递给 main 函数。\n# 因此，你只需确保你的代码结构如上所示即可。"
+        code_language: python3
+        desc: step4输入param-4
+        outputs:
+          paper_panels:
+            children: null
+            type: array[object]
+        selected: false
+        title: 代码执行2-2
+        type: code
+        variables:
+        - value_selector:
+          - '1751340553871'
+          - text
+          variable: text_and_image
+        - value_selector:
+          - '1752628782586'
+          - text_len
+          variable: text_len
+        - value_selector:
+          - '1751440936103'
+          - output_array
+          variable: image_data
+      height: 80
+      id: '1751595483415'
+      position:
+        x: 4197.000000036724
+        y: 541
+      positionAbsolute:
+        x: 4197.000000036724
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(llm_json_string: str) -> dict:\n    \"\"\"\n\
+          \    解析输入的JSON字符串为一个字典，并移除所有章节中的'tp'字段。\n\n    Args:\n        llm_json_string\
+          \ (str): LLM输出的纯JSON字符串。\n\n    Returns:\n        dict: 移除了'tp'字段的Python字典。\n\
+          \              如果解析失败，将打印错误信息并返回一个空字典。\n    \"\"\"\n    \n    parsed_data\
+          \ = {} # 初始化一个空字典用于存储解析结果\n    \n\n    parsed_data = json.loads(llm_json_string)\n\
+          \    \n\n        # 2. 遍历字典，移除每个章节中的 'tp' 字段\n        # 检查 parsed_data 是否是字典类型，以防LLM输出意外格式\n\
+          \    if isinstance(parsed_data, dict):\n        for section_name, section_info\
+          \ in parsed_data.items():\n                # 确保 section_info 也是一个字典，并且包含\
+          \ 'tp' 键\n            if isinstance(section_info, dict) and 'tp' in section_info:\n\
+          \                del section_info['tp'] # 移除 'tp' 字段\n    parsed_data =\
+          \ {key: value \nfor key, value in parsed_data.items() if\n value != {}}\n\
+          \    return {\"output_data\":parsed_data}"
+        code_language: python3
+        desc: ''
+        outputs:
+          output_data:
+            children: null
+            type: object
+        selected: false
+        title: 代码执行2-1
+        type: code
+        variables:
+        - value_selector:
+          - '1751340553871'
+          - text
+          variable: llm_json_string
+      height: 52
+      id: '1751619680318'
+      position:
+        x: 3896.680297872079
+        y: 541
+      positionAbsolute:
+        x: 3896.680297872079
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(output_data, paper_panels):\n    \"\"\"\n \
+          \   整合 output_data 和 paper_panels 为一个 JSON Body，\n    自动修复没有 title 的情况，并将\
+          \ figuree 的章节名统一为新版 section_name。\n    最终以 Dify 期望的字典格式返回输出。\n\n    Args:\n\
+          \        output_data: 对应 Python 服务端 data[\"figures\"] 的数据。\n        paper_panels:\
+          \ 对应 Python 服务端 data[\"panels\"] 的数据。\n\n    Returns:\n        一个字典，其中包含键\
+          \ 'json_request_body'，\n        值是整合后的 JSON 字符串。\n    \"\"\"\n\n    # ✅\
+          \ 1. 修复没有 title 的问题\n    has_title = any(\"title\" in p.get(\"section_name\"\
+          , \"\").lower() for p in paper_panels)\n    if not has_title and paper_panels:\n\
+          \        paper_panels[0][\"section_name\"] = \"Poster Title\"\n\n    # ✅\
+          \ 2. 将旧章节名映射为新章节名（适配 layout 结果）\n    section_rename_map = {\n        \"\
+          Agent Construction\": \"Construction\",\n        \"Collaboration Mechanisms\"\
+          : \"Collaboration\",\n        \"Agent Methodology\": \"Agent Methodology\"\
+          ,  # 如需映射可以加\n    }\n\n    cleaned_figuree = {}\n    for old_name, fig in\
+          \ output_data.items():\n        new_name = section_rename_map.get(old_name,\
+          \ old_name)\n        cleaned_figuree[new_name] = fig\n\n    # ✅ 3. 构造 JSON\
+          \ Payload\n    output_payload_for_service = {\n        \"figures\": cleaned_figuree,\n\
+          \        \"panels\": paper_panels\n    }\n\n    json_string_to_send = json.dumps(output_payload_for_service)\n\
+          \n    return {\n        \"json_request_body\": json_string_to_send\n   \
+          \ }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          json_request_body:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行 2-3
+        type: code
+        variables:
+        - value_selector:
+          - '1751619680318'
+          - output_data
+          variable: output_data
+        - value_selector:
+          - '1751595483415'
+          - paper_panels
+          variable: paper_panels
+      height: 52
+      id: '1751875441262'
+      position:
+        x: 4503.707898456847
+        y: 541
+      positionAbsolute:
+        x: 4503.707898456847
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-558
+            key: ''
+            type: text
+            value: '{{#1751875441262.json_request_body#}}'
+          type: raw-text
+        desc: ''
+        headers: Content-Type:application/json
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 3
+        type: http-request
+        url: http://10.239.121.28:44462/layout/
+        variables: []
+      height: 139
+      id: '1751877418051'
+      position:
+        x: 4807
+        y: 541
+      positionAbsolute:
+        x: 4807
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\nimport copy\nimport math\n\ndef main(mix_input, panell,\
+          \ figuree, imagee):\n    mix_input_json = json.loads(mix_input)\n    figures\
+          \ = figuree\n    panels = panell\n    panel_arrangement = mix_input_json['panel_arrangement']\n\
+          \    figure_arrangement = mix_input_json[\"figure_arrangement\"]\n    text_arrangement\
+          \ = mix_input_json[\"text_arrangement\"]\n\n    # --- 修复处理 imagee 为 dict，并统一\
+          \ key 为字符串 ---\n    result_dict = {}\n    for idx, item in enumerate(imagee):\n\
+          \        if not isinstance(item, dict):\n            continue\n        item_id\
+          \ = item.get(\"id\")\n        if item_id is None:\n            continue\n\
+          \        item_id = str(item_id)\n        value_data = item.copy()\n    \
+          \    value_data.pop(\"id\", None)\n        result_dict[item_id] = value_data\n\
+          \    images = result_dict\n\n    # --- 工具函数定义 ---\n    def split_textbox(textbox,\
+          \ ratio):\n        total_ratio = ratio + 1\n        top_height = textbox['height']\
+          \ * ratio / total_ratio\n        bottom_height = textbox['height'] * 1 /\
+          \ total_ratio\n        base_name = textbox['textbox_name'].rsplit('_t',\
+          \ 1)[0]\n\n        top_box = dict(textbox)\n        top_box['height'] =\
+          \ top_height\n        top_box['textbox_name'] = f\"{base_name}_t0\"\n\n\
+          \        bottom_box = dict(textbox)\n        bottom_box['y'] = textbox['y']\
+          \ + top_height\n        bottom_box['height'] = bottom_height\n        bottom_box['textbox_name']\
+          \ = f\"{base_name}_t1\"\n\n        return top_box, bottom_box\n\n    def\
+          \ char_capacity(\n        bbox,\n        font_size_px=40 * (96 / 72),\n\
+          \        *,\n        avg_width_ratio: float = 0.54,\n        line_height_ratio:\
+          \ float = 1,\n        padding_px: int = 0,\n    ) -> int:\n        CHAR_CONST\
+          \ = 10\n        _, _, height_px, width_px = bbox\n        usable_w = max(0,\
+          \ width_px - 2 * padding_px)\n        usable_h = max(0, height_px - 2 *\
+          \ padding_px)\n        if usable_w == 0 or usable_h == 0:\n            return\
+          \ 0\n\n        avg_char_w = font_size_px * avg_width_ratio\n        line_height\
+          \ = font_size_px * line_height_ratio\n        chars_per_line = max(1, math.floor(usable_w\
+          \ / avg_char_w))\n        lines = max(1, math.floor(usable_h / line_height))\n\
+          \n        return chars_per_line * lines * CHAR_CONST\n\n    def to_inches(value_in_units,\
+          \ units_per_inch=72):\n        return value_in_units / units_per_inch\n\n\
+          \    def get_arrangments_in_inches(\n        width,\n        height,\n \
+          \       panel_arrangement,\n        figure_arrangement,\n        text_arrangement,\n\
+          \        units_per_inch=72\n    ):\n        panel_arrangement_inches = copy.deepcopy(panel_arrangement)\n\
+          \        figure_arrangement_inches = copy.deepcopy(figure_arrangement)\n\
+          \        text_arrangement_inches = copy.deepcopy(text_arrangement)\n\n \
+          \       for p in panel_arrangement_inches:\n            p[\"x\"] = to_inches(p[\"\
+          x\"], units_per_inch)\n            p[\"y\"] = to_inches(p[\"y\"], units_per_inch)\n\
+          \            p[\"width\"] = to_inches(p[\"width\"], units_per_inch)\n  \
+          \          p[\"height\"] = to_inches(p[\"height\"], units_per_inch)\n\n\
+          \        for f in figure_arrangement_inches:\n            f[\"x\"] = to_inches(f[\"\
+          x\"], units_per_inch)\n            f[\"y\"] = to_inches(f[\"y\"], units_per_inch)\n\
+          \            f[\"width\"] = to_inches(f[\"width\"], units_per_inch)\n  \
+          \          f[\"height\"] = to_inches(f[\"height\"], units_per_inch)\n\n\
+          \        for t in text_arrangement_inches:\n            t[\"x\"] = to_inches(t[\"\
+          x\"], units_per_inch)\n            t[\"y\"] = to_inches(t[\"y\"], units_per_inch)\n\
+          \            t[\"width\"] = to_inches(t[\"width\"], units_per_inch)\n  \
+          \          t[\"height\"] = to_inches(t[\"height\"], units_per_inch)\n\n\
+          \        width_inch = to_inches(width, units_per_inch)\n        height_inch\
+          \ = to_inches(height, units_per_inch)\n        return width_inch, height_inch,\
+          \ panel_arrangement_inches, figure_arrangement_inches, text_arrangement_inches\n\
+          \n    # --- 主逻辑处理 ---\n    text_arrangement_title = text_arrangement[0]\n\
+          \    text_arrangement = text_arrangement[1:]\n    top, bottom = split_textbox(text_arrangement_title,\
+          \ 0.8)\n    text_arrangement = [top, bottom] + text_arrangement\n\n    \
+          \    # ✅ 主动从 figures + panels 构造带图像路径的 figure_arrangement\n    figure_arrangement\
+          \ = []\n\n    for panel in panels:\n        section_name = panel.get('section_name',\
+          \ '')\n        panel_id = panel.get('panel_id')\n        figure_info = figures.get(section_name,\
+          \ {})\n\n        if 'image' in figure_info:\n            image_id = str(figure_info['image'])\n\
+          \            image_url = images.get(image_id, {}).get('url', '')\n\n   \
+          \         if image_url:\n                figure_box = {\n              \
+          \      'panel_id': panel_id,\n                    'x': panel.get('x', 0)\
+          \ + 5,   # 你可以根据需要微调坐标\n                    'y': panel.get('y', 0) + 5,\n\
+          \                    'width': panel.get('width', 100) - 10,\n          \
+          \          'height': panel.get('height', 100) / 2,\n                   \
+          \ 'figure_path': image_url\n                }\n                figure_arrangement.append(figure_box)\n\
+          \n    for text_arrangement_item in text_arrangement:\n        num_chars\
+          \ = char_capacity(\n            bbox=(text_arrangement_item['x'], text_arrangement_item['y'],\
+          \ text_arrangement_item['height'], text_arrangement_item['width'])\n   \
+          \     )\n        text_arrangement_item['num_chars'] = num_chars\n\n    width_inch,\
+          \ height_inch, panel_arrangement_inches, figure_arrangement_inches, text_arrangement_inches\
+          \ = get_arrangments_in_inches(\n        1200, 900, panel_arrangement, figure_arrangement,\
+          \ text_arrangement, 25\n    )\n\n    tree_split_results = {\n        'poster_width':\
+          \ 1200,\n        'poster_height': 900,\n        'poster_width_inches': width_inch,\n\
+          \        'poster_height_inches': height_inch,\n        'panels': panels,\n\
+          \        'panel_arrangement': panel_arrangement,\n        'figure_arrangement':\
+          \ figure_arrangement,\n        'text_arrangement': text_arrangement,\n \
+          \       'panel_arrangement_inches': panel_arrangement_inches,\n        'figure_arrangement_inches':\
+          \ figure_arrangement_inches,\n        'text_arrangement_inches': text_arrangement_inches,\n\
+          \    }\n\n    return {\n        \"tree_split_results\": tree_split_results\n\
+          \    }\n"
+        code_language: python3
+        desc: step4-5
+        outputs:
+          tree_split_results:
+            children: null
+            type: object
+        selected: false
+        title: 代码执行 3
+        type: code
+        variables:
+        - value_selector:
+          - '1751877418051'
+          - body
+          variable: mix_input
+        - value_selector:
+          - '1751595483415'
+          - paper_panels
+          variable: panell
+        - value_selector:
+          - '1751619680318'
+          - output_data
+          variable: figuree
+        - value_selector:
+          - '1751440936103'
+          - output_array
+          variable: imagee
+      height: 80
+      id: '1752128946715'
+      position:
+        x: 5131.482036243859
+        y: 541
+      positionAbsolute:
+        x: 5131.482036243859
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-turbo-2025-04-28
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 8a63fab5-b343-4088-b856-8c7baaeec596
+          role: system
+          text: You are the author of the paper, and you will create a poster for
+            the paper.
+        - id: 37c51b48-0222-4947-b48f-6ec5d71dffaa
+          role: user
+          text: "You are a document content divider and extractor specialist, expert\
+            \ in dividing and extracting content from various types of documents and\
+            \ reorganizing it into a two-level json format for later poster generation.\n\
+            \nBased on given markdown document, generate a JSON output for later poster\
+            \ generation, make sure the output is concise and focused.\nStep-by-Step\
+            \ Instructions:\n1. Identify Sections and Subsections in document and\
+            \ identify sections and subsections based on the heading levels and logical\
+            \ structure.\n\n2. Divide Content: Reorganize the content into sections\
+            \ and subsections, ensuring that each subsection contains approximately\
+            \ 500 words.\n\n3. Refine Titles: Create titles for each section with\
+            \ at most 3 words.\n\n4. Remove Unwanted Elements: Eliminate any unwanted\
+            \ elements such as headers, footers, text surrounded by `~~` indicating\
+            \ deletion.\n\n5. Refine Text: For content, you should keep as much raw\
+            \ text as possible. Do not include citations.\n\n6. Length: you should\
+            \ control the length of each section, according to their importance according\
+            \ to your understanding of the paper. For important sections, their content\
+            \ should be long.\n\n7. Make sure there is a poster title section at the\
+            \ beginning, and it should contain information like paper title, author,\
+            \ organization etc.\n\n8. The \"meta\" key contains the meta information\
+            \ of the poster, where the title should be the raw title of the paper\
+            \ and is not summarized.\n\n9. There **must** be a section for the poster\
+            \ title.\n\n10.There **must** be no more than 9 sections.\nExample Output:\n\
+            {\n    \"meta\": {\n        \"poster_title\": \"raw title of the paper\"\
+            ,\n        \"authors\": \"authors of the paper\",\n        \"affiliations\"\
+            : \"affiliations of the authors\"\n    },\n    \"sections\": [\n     \
+            \   {\n            \"title\": \"Poster Title & Author\",\n           \
+            \ \"content\": \"content of poster title and author\"\n        },\n  \
+            \      {\n            \"title\": \"title of section1\",\n            \"\
+            content\": \"content of section 1\"\n        },\n        {\n         \
+            \   \"title\": \"title of section2\",\n            \"content\": \"content\
+            \ of section 2\"\n        }\n    ]\n}\n\nGive your output in JSON format.\n\
+            \nInput:\n{{{#1750391187013.body#}} }}\n\n"
+        selected: false
+        title: step1
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: '1752482167638'
+      position:
+        x: 1311.3601559637673
+        y: 278.4107384850016
+      positionAbsolute:
+        x: 1311.3601559637673
+        y: 278.4107384850016
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 看step5 输入要用代码
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-max
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: aac1383a-d8de-42ed-bab6-05afe8df43cd
+          role: system
+          text: "system_prompt: |\n  You are an expert assistant tasked with producing\
+            \ bullet-point summaries for a given poster section. \n  You will be given:\n\
+                1. A JSON object \"summary_of_section\" that contains:\n       {\n\
+                     \"title\": \"<section title>\",\n         \"content\": \"<full\
+            \ text description>\"\n       }\n    2. An integer \"number_of_textboxes\"\
+            , which can only be 1 or 2.\n\n\n  Your goal is to produce a JSON object\
+            \ representing the bullet-point text for this poster section. Each “textbox”\
+            \ key (textbox1 or textbox2) maps to a list of bullet-point entries. Each\
+            \ bullet-point entry must be a JSON object of the form:\n    {\n     \
+            \ \"alignment\": \"left\",            # always \"left\"\n      \"bullet\"\
+            : true,                 # always true for bullet points\n      \"level\"\
+            : <indent_level>,        # integer level of indentation (0 = top-level)\n\
+                  \"font_size\": <integer>,         # a font size integer, e.g. 48\n\
+                  \"runs\": [\n        {\n          \"text\": \"<bullet point text>\"\
+            ,\n          # optionally \"bold\": true or \"italic\": true if needed\n\
+                    }\n      ]\n    }\n\n\n  IMPORTANT REQUIREMENTS:\n    • If \"\
+            number_of_textboxes\" = 1, your final output must only have:\n       \
+            \  {\n           \"title\": [ section title ],\n           \"textbox1\"\
+            : [ ...array of bullet items... ]\n         }\n    • If \"number_of_textboxes\"\
+            \ = 2, then you must produce TWO keys, \"textbox1\" and \"textbox2\",\
+            \ and each must have the SAME NUMBER of bullet items. For example:\n \
+            \        {\n           \"title\": [ section title ],\n           \"textbox1\"\
+            : [... N bullet items ...],\n           \"textbox2\": [... N bullet items\
+            \ ...]\n         }\n      where both arrays have identical length (though\
+            \ different text is allowed).\n    • Each bullet point is a JSON object\
+            \ with the structure shown above; you can create as many bullet points\
+            \ as needed (following the constraint about textbox count). \n    • No\
+            \ extra keys or additional formatting outside of the JSON structure (e.g.,\
+            \ do not include a “title” key—only produce bullet items in the final\
+            \ JSON).\n    • Make sure your final output is valid JSON.\n\n\ntemplate:\
+            \ |\n  Instructions:\n    1. Read the provided poster section (in summary_of_section)\
+            \ to understand the topic or content to summarize.\n    2. Note the desired\
+            \ number of text boxes from number_of_textboxes.\n    3. Generate bullet\
+            \ points summarizing or highlighting key aspects of the given content.\n\
+                4. Adhere to the JSON format requirements:\n       - Exactly one JSON\
+            \ object.\n       - Keys: either [\"title\", \"textbox1\"] if one text\
+            \ box, or [\"title\", \"textbox1\", \"textbox2\"] if two text boxes.\n\
+                   - The title key should be the section title.\n       - Each textbox\
+            \ key maps to an array of bullet objects.\n       - If two text boxes,\
+            \ ensure the arrays have the same length.\n    5. Respect the structure\
+            \ of each bullet (alignment, bullet, level, font_size, runs).\n    6.\
+            \ Return only the JSON object, nothing else.\n\n\n  Example output when\
+            \ number_of_textboxes=1 might be:\n  {\n    \"title\": [\n      {\n   \
+            \     \"alignment\": \"left\",\n        \"bullet\": false,\n        \"\
+            level\": 0,\n        \"font_size\": 60,\n        \"runs\": [\n       \
+            \   {\n            \"text\": \"Methodology\",\n            \"bold\": true\n\
+                      }\n        ]\n      }\n    ],\n    \"textbox1\": [\n      {\n\
+                    \"alignment\": \"left\",\n        \"bullet\": true,\n        \"\
+            level\": 0,\n        \"font_size\": 48,\n        \"runs\": [\n       \
+            \   {\n            \"text\": \"Key point about domain-invariant component\
+            \ analysis.\"\n          }\n        ]\n      },\n      {\n        \"alignment\"\
+            : \"left\",\n        \"bullet\": true,\n        \"level\": 1,\n       \
+            \ \"font_size\": 48,\n        \"runs\": [\n          {\n            \"\
+            text\": \"Supporting detail.\",\n            \"bold\": true\n         \
+            \ }\n        ]\n      }\n    ]\n  }\n\n\n  Example output when number_of_textboxes=2\
+            \ might be:\n  {\n    \"title\": [\n      {\n        \"alignment\": \"\
+            left\",\n        \"bullet\": false,\n        \"level\": 0,\n        \"\
+            font_size\": 60,\n        \"runs\": [\n          {\n            \"text\"\
+            : \"Experimental results\",\n            \"bold\": true\n          }\n\
+                    ]\n      }\n    ],\n    \"textbox1\": [\n      {\n        \"alignment\"\
+            : \"left\",\n        \"bullet\": true,\n        \"level\": 0,\n       \
+            \ \"font_size\": 48,\n        \"runs\": [\n          {\n            \"\
+            text\": \"Primary finding, bullet 1.\"\n          }\n        ]\n     \
+            \ },\n      {\n        \"alignment\": \"left\",\n        \"bullet\": true,\n\
+                    \"level\": 0,\n        \"font_size\": 48,\n        \"runs\": [\n\
+                      {\n            \"text\": \"Primary finding, bullet 2.\"\n   \
+            \       }\n        ]\n      }\n    ],\n    \"textbox2\": [\n      {\n\
+                    \"alignment\": \"left\",\n        \"bullet\": true,\n        \"\
+            level\": 0,\n        \"font_size\": 48,\n        \"runs\": [\n       \
+            \   {\n            \"text\": \"Additional commentary, bullet 1.\"\n   \
+            \       }\n        ]\n      },\n      {\n        \"alignment\": \"left\"\
+            ,\n        \"bullet\": true,\n        \"level\": 0,\n        \"font_size\"\
+            : 48,\n        \"runs\": [\n          {\n            \"text\": \"Additional\
+            \ commentary, bullet 2.\"\n          }\n        ]\n      }\n    ]\n  }\n\
+            \n\n  summary_of_section:\n  {{ summary_of_section }}\n\n\n  number_of_textboxes:\n\
+              {{ number_of_textboxes }}\n\n\n  section_title:\n  {{ section_title\
+            \ }}"
+        selected: false
+        title: actor
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 116
+      id: '1752484485259'
+      position:
+        x: 4485.475468899205
+        y: 860.2629726539449
+      positionAbsolute:
+        x: 4485.475468899205
+        y: 860.2629726539449
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 怎么加图片
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 9d86ed97-3c59-420c-9515-3b56c2b07e1a
+          role: system
+          text: 'system_prompt: |
+
+              You are an agent that is given three images:
+
+                1) Negative Example: This image shows a bounding box with text overflowing
+            outside it (i.e., text crossing or cut off by the box).
+
+                2) Positive Example: This image shows a bounding box with text that
+            fits completely (i.e., no text crossing or cut off).
+
+                3) Target Image: This is the final image you must analyze.
+
+
+
+              From the first two images, you learn to interpret:
+
+                1) Whether text is overflowing (text crossing, cut off, or otherwise
+            cannot fully fit in the box).
+
+                2) Whether there is too much blank space in the bounding box (i.e.,
+            the text is significantly smaller than the box, leaving large unused space).
+
+                3) Whether the text and bounding box are generally well-aligned (no
+            overflow, no large blank space).
+
+
+
+              Then, for the Target Image, you must:
+
+                - If there is any overflow text, return "1".
+
+                - If there is too much blank space, return "2".
+
+                - If the text fits well (no overflow, no large blank space), return
+            "3".
+
+
+
+            template: |
+
+              Instructions:
+
+                1) You are provided three images (negative example, positive example,
+            and target).
+
+                2) Refer to the first two images (negative and positive examples)
+            to understand:
+
+                  - What text overflow looks like
+
+                  - What too much blank space in a bounding box means
+
+                  - How a generally well-fitted bounding box appears
+
+                3) Analyze the third (Target) image''s bounding box to check:
+
+                  - If there is overflow text, return "1"
+
+                  - If there is too much blank space, return "2"
+
+                  - Otherwise (if everything looks good), return "3"'
+        selected: false
+        title: critic
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 122
+      id: '1752484668452'
+      position:
+        x: 4879.6121835348795
+        y: 1068.6648816366876
+      positionAbsolute:
+        x: 4879.6121835348795
+        y: 1068.6648816366876
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(raw_content, tree_split_results):\n     # 解包嵌套的\
+          \ tree_split_results\n    if \"tree_split_results\" in tree_split_results:\n\
+          \        tree_split_results = tree_split_results[\"tree_split_results\"\
+          ]\n        \n    panels = tree_split_results['panels']\n    text_arrangement_list\
+          \ = tree_split_results['text_arrangement_inches']\n\n    processed_sections_data\
+          \ = []\n\n    # 从索引 1 开始遍历 raw_content['sections']\n    for i in range(1,\
+          \ len(raw_content['sections'])):\n        section_data = raw_content['sections'][i]\n\
+          \        section_title = section_data['title']\n        summary_of_section\
+          \ = section_data['content']\n\n        # ✅ 使用 panel_id 匹配方式，防止越界\n     \
+          \   arrangement = next((p for p in panels if p['panel_id'] == i), None)\n\
+          \        if arrangement is None:\n            continue  # 没找到对应的 panel_id，跳过该节\n\
+          \n        # 确定文本框数量\n        num_textboxes = 2 if arrangement['gp'] > 0\
+          \ else 1\n\n        # 计算 total_expected_length\n        total_expected_length\
+          \ = 0\n        target_textboxes = [\n            t for t in text_arrangement_list\
+          \ if t['panel_id'] == i\n        ]\n\n        if len(target_textboxes) >\
+          \ 0:\n            target_textboxes.pop(0)  # 移除标题框\n\n        for text_arrangement\
+          \ in target_textboxes:\n            total_expected_length += text_arrangement['num_chars']\n\
+          \n        # 整理数据结构\n        processed_sections_data.append({\n         \
+          \   'section_index': i,\n            'section_title': section_title,\n \
+          \           'summary_of_section': summary_of_section,\n            'num_textboxes':\
+          \ num_textboxes,\n            'total_expected_length': total_expected_length,\n\
+          \            'target_textboxes': target_textboxes\n        })\n\n    return\
+          \ {\n        \"processed_sections_data\": processed_sections_data\n    }\n"
+        code_language: python3
+        desc: 解析调整数据
+        outputs:
+          processed_sections_data:
+            children: null
+            type: array[object]
+        selected: false
+        title: step5-1
+        type: code
+        variables:
+        - value_selector:
+          - '1752562605694'
+          - raw_content
+          variable: raw_content
+        - value_selector:
+          - '1753349880726'
+          - tree_split_results_fixed
+          variable: tree_split_results
+      height: 80
+      id: '1752559970997'
+      position:
+        x: 7271.364427094115
+        y: 547.5975395538646
+      positionAbsolute:
+        x: 7271.364427094115
+        y: 547.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(raw_content):\n    cleaned_json_string = raw_content.removeprefix(\"\
+          ```json\\n\").removesuffix(\"\\n```\")\n    try:\n        data = json.loads(cleaned_json_string)\n\
+          \        print(\"成功解析为 Python 字典！\")\n        print(type(data))\n      \
+          \  print(data[\"meta\"][\"poster_title\"]) # 验证数据是否可访问\n    except json.JSONDecodeError\
+          \ as e:\n        print(f\"JSON 解析错误: {e}\")\n    return {\"raw_content\"\
+          :data}"
+        code_language: python3
+        desc: ''
+        outputs:
+          raw_content:
+            children: null
+            type: object
+        selected: false
+        title: 解析rawcontent
+        type: code
+        variables:
+        - value_selector:
+          - '1752482167638'
+          - text
+          variable: raw_content
+      height: 52
+      id: '1752562605694'
+      position:
+        x: 6345.827722382942
+        y: 547.5975395538646
+      positionAbsolute:
+        x: 6345.827722382942
+        y: 547.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: ''
+        error_handle_mode: terminated
+        height: 170
+        is_parallel: false
+        iterator_selector:
+        - '1752559970997'
+        - processed_sections_data
+        output_selector:
+        - '1752817972114'
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1752564134178start
+        title: step5-2
+        type: iteration
+        width: 1296
+      height: 170
+      id: '1752564134178'
+      position:
+        x: 7573.575143450841
+        y: 547.5975395538646
+      positionAbsolute:
+        x: 7573.575143450841
+        y: 547.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 1296
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1752564134178start
+      parentId: '1752564134178'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 7597.575143450841
+        y: 615.5975395538646
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        code: "import json\ndef main(raw_content):\n    raw = json.loads(raw_content)\n\
+          \    text_len = 0\n    for i in raw['sections']:\n        text_len += len(i['content'])\n\
+          \    return {\n        \"raw_content\": raw,\n        \"text_len\":text_len\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          raw_content:
+            children: null
+            type: object
+          text_len:
+            children: null
+            type: number
+        selected: false
+        title: total len and json
+        type: code
+        variables:
+        - value_selector:
+          - '1752482167638'
+          - text
+          variable: raw_content
+      height: 52
+      id: '1752628782586'
+      position:
+        x: 2144.252539682765
+        y: 319.24875668238576
+      positionAbsolute:
+        x: 2144.252539682765
+        y: 319.24875668238576
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "\ndef main(item):\n    summary = item[\"summary_of_section\"]\n   \
+          \ panel_data = item[\"target_textboxes\"]\n    num_textboxes = item[\"num_textboxes\"\
+          ]\n    title = item[\"section_title\"]\n\n\n    return {\n        \"summary\"\
+          :summary,\n        \"panel_data\":panel_data,\n        \"num_textboxes\"\
+          :num_textboxes,\n        \"title\":title\n    }\n"
+        code_language: python3
+        desc: 提取
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1752564134178'
+        outputs:
+          num_textboxes:
+            children: null
+            type: number
+          panel_data:
+            children: null
+            type: array[object]
+          summary:
+            children: null
+            type: string
+          title:
+            children: null
+            type: string
+        selected: false
+        title: step5-2-1
+        type: code
+        variables:
+        - value_selector:
+          - '1752564134178'
+          - item
+          variable: item
+      height: 80
+      id: '1752632247397'
+      parentId: '1752564134178'
+      position:
+        x: 136.2427445886442
+        y: 65
+      positionAbsolute:
+        x: 7709.817888039485
+        y: 612.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1752564134178'
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-plus-latest
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 86bc54e8-3377-41c9-a65d-04f9eaaff445
+          role: system
+          text: "system_prompt: |\n  You are an expert assistant tasked with producing\
+            \ bullet-point summaries for a given poster section. \n  You will be given:\n\
+                1. A JSON object \"summary_of_section\" that contains:\n       {\n\
+                     \"title\": \"<section title>\",\n         \"content\": \"<full\
+            \ text description>\"\n       }\n    2. An integer \"number_of_textboxes\"\
+            , which can only be 1 or 2.\n\n\n  Your goal is to produce a JSON object\
+            \ representing the bullet-point text for this poster section. Each “textbox”\
+            \ key (textbox1 or textbox2) maps to a list of bullet-point entries. Each\
+            \ bullet-point entry must be a JSON object of the form:\n    {\n     \
+            \ \"alignment\": \"left\",            # always \"left\"\n      \"bullet\"\
+            : true,                 # always true for bullet points\n      \"level\"\
+            : <indent_level>,        # integer level of indentation (0 = top-level)\n\
+                  \"font_size\": <integer>,         # a font size integer, e.g. 48\n\
+                  \"runs\": [\n        {\n          \"text\": \"<bullet point text>\"\
+            ,\n          # optionally \"bold\": true or \"italic\": true if needed\n\
+                    }\n      ]\n    }\n\n\n  IMPORTANT REQUIREMENTS:\n    • If \"\
+            number_of_textboxes\" = 1, your final output must only have:\n       \
+            \  {\n           \"title\": [ section title ],\n           \"textbox1\"\
+            : [ ...array of bullet items... ]\n         }\n    • If \"number_of_textboxes\"\
+            \ = 2, then you must produce TWO keys, \"textbox1\" and \"textbox2\",\
+            \ and each must have the SAME NUMBER of bullet items. For example:\n \
+            \        {\n           \"title\": [ section title ],\n           \"textbox1\"\
+            : [... N bullet items ...],\n           \"textbox2\": [... N bullet items\
+            \ ...]\n         }\n      where both arrays have identical length (though\
+            \ different text is allowed).\n    • Each bullet point is a JSON object\
+            \ with the structure shown above; you can create as many bullet points\
+            \ as needed (following the constraint about textbox count). \n    • No\
+            \ extra keys or additional formatting outside of the JSON structure (e.g.,\
+            \ do not include a “title” key—only produce bullet items in the final\
+            \ JSON).\n    • Make sure your final output is valid JSON.\n\n\ntemplate:\
+            \ |\n  Instructions:\n    1. Read the provided poster section (in summary_of_section)\
+            \ to understand the topic or content to summarize.\n    2. Note the desired\
+            \ number of text boxes from number_of_textboxes.\n    3. Generate bullet\
+            \ points summarizing or highlighting key aspects of the given content.\n\
+                4. Adhere to the JSON format requirements:\n       - Exactly one JSON\
+            \ object.\n       - Keys: either [\"title\", \"textbox1\"] if one text\
+            \ box, or [\"title\", \"textbox1\", \"textbox2\"] if two text boxes.\n\
+                   - The title key should be the section title.\n       - Each textbox\
+            \ key maps to an array of bullet objects.\n       - If two text boxes,\
+            \ ensure the arrays have the same length.\n    5. Respect the structure\
+            \ of each bullet (alignment, bullet, level, font_size, runs).\n    6.\
+            \ Return only the JSON object, nothing else.\n\n\n  Example output when\
+            \ number_of_textboxes=1 might be:\n  {\n    \"title\": [\n      {\n   \
+            \     \"alignment\": \"left\",\n        \"bullet\": false,\n        \"\
+            level\": 0,\n        \"font_size\": 60,\n        \"runs\": [\n       \
+            \   {\n            \"text\": \"Methodology\",\n            \"bold\": true\n\
+                      }\n        ]\n      }\n    ],\n    \"textbox1\": [\n      {\n\
+                    \"alignment\": \"left\",\n        \"bullet\": true,\n        \"\
+            level\": 0,\n        \"font_size\": 48,\n        \"runs\": [\n       \
+            \   {\n            \"text\": \"Key point about domain-invariant component\
+            \ analysis.\"\n          }\n        ]\n      },\n      {\n        \"alignment\"\
+            : \"left\",\n        \"bullet\": true,\n        \"level\": 1,\n       \
+            \ \"font_size\": 48,\n        \"runs\": [\n          {\n            \"\
+            text\": \"Supporting detail.\",\n            \"bold\": true\n         \
+            \ }\n        ]\n      }\n    ]\n  }\n\n\n  Example output when number_of_textboxes=2\
+            \ might be:\n  {\n    \"title\": [\n      {\n        \"alignment\": \"\
+            left\",\n        \"bullet\": false,\n        \"level\": 0,\n        \"\
+            font_size\": 60,\n        \"runs\": [\n          {\n            \"text\"\
+            : \"Experimental results\",\n            \"bold\": true\n          }\n\
+                    ]\n      }\n    ],\n    \"textbox1\": [\n      {\n        \"alignment\"\
+            : \"left\",\n        \"bullet\": true,\n        \"level\": 0,\n       \
+            \ \"font_size\": 48,\n        \"runs\": [\n          {\n            \"\
+            text\": \"Primary finding, bullet 1.\"\n          }\n        ]\n     \
+            \ },\n      {\n        \"alignment\": \"left\",\n        \"bullet\": true,\n\
+                    \"level\": 0,\n        \"font_size\": 48,\n        \"runs\": [\n\
+                      {\n            \"text\": \"Primary finding, bullet 2.\"\n   \
+            \       }\n        ]\n      }\n    ],\n    \"textbox2\": [\n      {\n\
+                    \"alignment\": \"left\",\n        \"bullet\": true,\n        \"\
+            level\": 0,\n        \"font_size\": 48,\n        \"runs\": [\n       \
+            \   {\n            \"text\": \"Additional commentary, bullet 1.\"\n   \
+            \       }\n        ]\n      },\n      {\n        \"alignment\": \"left\"\
+            ,\n        \"bullet\": true,\n        \"level\": 0,\n        \"font_size\"\
+            : 48,\n        \"runs\": [\n          {\n            \"text\": \"Additional\
+            \ commentary, bullet 2.\"\n          }\n        ]\n      }\n    ]\n  }\n\
+            \n\n  summary_of_section:\n  {{{#1752632247397.summary#}} }} \n\n\n  number_of_textboxes:\n\
+              {{{#1752632247397.num_textboxes#}} }}\n\n\n  section_title:\n  {{{#1752632247397.title#}}}}"
+        selected: false
+        title: actor
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: '1752634762436'
+      parentId: '1752564134178'
+      position:
+        x: 438.8031479019728
+        y: 61
+      positionAbsolute:
+        x: 8012.378291352814
+        y: 608.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1752564134178'
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-plus-2025-04-28
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 7b64b870-e098-47c8-a4bf-2953dca4f328
+          role: system
+          text: '你是一个英文学术海报 bullet point 智能排版助手。你需要根据每个文本框（textbox）的最大可容纳字符数、宽度、高度，以及初步生成的
+            bullet point 内容，对 bullet point 进行自动调整，使其适合排版到海报上。
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            你的目标是：
+
+            - 如果内容太长，自动缩短、精简 bullet point，使其不超过七个words。
+
+            - 保持 bullet point 结构和原意，输出最终适合排版的 JSON 数据。
+
+            - 输出格式必须与输入 bullet point JSON 结构一致。
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+
+            请根据以下信息，对 bullet point 内容进行自动调整，使其适合排版到海报上：
+
+
+            【section 标题】
+
+            {{#1752632247397.title#}}
+
+
+            【每个文本框信息】
+
+            {{#1752632247397.panel_data#}}
+
+            - 文本框名称：textbox_name
+
+            - 最大字符数：num_chars
+
+            - 宽度（英寸）：width
+
+            - 高度（英寸）：height
+
+            - 初步 bullet point 内容（JSON，结构如下）：
+
+            {{#1752634762436.text#}}
+
+
+            请你：
+
+            1. 检查每个 bullet point 的内容长度是否适合（不超过最大字符数，内容不过于空洞）。
+
+            2. 如有必要，自动缩短、精简、合并、拆分、补充 bullet point，使其内容适合排版。
+
+            3. 保持 bullet point 的结构（如 alignment、bullet、level、font_size、runs 等字段）。
+
+            4. 输出最终可用于海报排版的 bullet point JSON，结构与输入{{#1752634762436.text#}}一致。
+
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**'
+        selected: false
+        title: critic
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: '1752634885697'
+      parentId: '1752564134178'
+      position:
+        x: 1036
+        y: 60
+      positionAbsolute:
+        x: 8609.575143450842
+        y: 607.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-409
+            key: ''
+            type: text
+            value: '{{#1752654556516.mix#}}'
+          type: raw-text
+        desc: ''
+        headers: Content-Type:application/json
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 4
+        type: http-request
+        url: http://10.239.121.28:44462/generate_poster/
+        variables: []
+      height: 139
+      id: '1752653114464'
+      position:
+        x: 9604.36061899857
+        y: 605
+      positionAbsolute:
+        x: 9604.36061899857
+        y: 605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(arg1,arg2):\n    for i in range(len(arg2)):\n\
+          \        new = json.loads(arg2[i])\n        arg2[i] = new\n    mix = {\n\
+          \        \"tree_split_result\":arg1,\n        \"bullet_content\":arg2\n\
+          \    }\n    mix = json.dumps(mix)\n    return {\n        \"mix\":mix\n \
+          \   }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          mix:
+            children: null
+            type: string
+        selected: false
+        title: to_string
+        type: code
+        variables:
+        - value_selector:
+          - '1753349880726'
+          - tree_split_results_fixed
+          variable: arg1
+        - value_selector:
+          - '1752736822426'
+          - bullet
+          variable: arg2
+      height: 52
+      id: '1752654556516'
+      position:
+        x: 9309.906543743993
+        y: 605
+      positionAbsolute:
+        x: 9309.906543743993
+        y: 605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "\ndef main(arg1):\n    return {\n        \"meta\": str(arg1['meta'])\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          meta:
+            children: null
+            type: string
+        selected: false
+        title: titlebullet
+        type: code
+        variables:
+        - value_selector:
+          - '1752562605694'
+          - raw_content
+          variable: arg1
+      height: 52
+      id: '1752736559319'
+      position:
+        x: 6659.898372425503
+        y: 547.5975395538646
+      positionAbsolute:
+        x: 6659.898372425503
+        y: 547.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-plus-latest
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: d8a4c704-791c-40da-b889-9beedd53a1d2
+          role: system
+          text: 'system_prompt: |
+
+              You are an expert assistant tasked with producing a JSON object for
+            a given input string "title_string" that includes:
+
+                • A paper title
+
+                • A list of authors with their affiliations
+
+
+
+              Your goal is to output a well-structured JSON with two keys: "title"
+            and "textbox1". The "title" key must be an array containing exactly one
+            bullet item with:
+
+                {
+
+                  "alignment": "center",
+
+                  "bullet": false,
+
+                  "level": 0,
+
+                  "font_size": 60,
+
+                  "runs": [
+
+                    {
+
+                      "text": "<extracted paper title>",
+
+                      "bold": true
+
+                    }
+
+                  ]
+
+                }
+
+
+
+              The "textbox1" key must be an array. It should be like:
+
+                [
+
+                  {
+
+                    "alignment": "center",
+
+                    "bullet": false,
+
+                    "level": 0,
+
+                    "font_size": 36,
+
+                    "runs": [
+
+                      {
+
+                        "text": "<authors with superscript numerals>"
+
+                      },
+
+                    ]
+
+                  },
+
+                  {
+
+                    "alignment": "center",
+
+                    "bullet": false,
+
+                    "level": 0,
+
+                    "font_size": 36,
+
+                    "runs": [
+
+                      {
+
+                        "text": "<affiliations with matching numerals>"
+
+                      }
+
+                    ]
+
+                  }
+
+                ]
+
+
+
+              Make sure:
+
+                • The authors appear all together on one line, using superscript numerals
+            to match their affiliations (e.g., "Author¹, AnotherAuthor²").
+
+                • The corresponding affiliations follow on the next line, in the same
+            bullet item, also using matching numerals.
+
+                • Output only the JSON; do not include additional explanation or text.
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+
+            template: |
+
+              Instructions:
+
+                1. Parse the input "title_string" to separate the paper title from
+            the authors and their affiliations.
+
+                2. Create the JSON structure with keys "title" and "textbox1".
+
+                3. Under "title", provide an array with one bullet item containing
+            the paper title, centered, not a bullet, level 0, font size 66, bold text.
+
+                4. Under "textbox1", provide an array with one bullet item containing:
+
+                   • The authors (in a single line) with superscripted numerals.
+
+                   • The corresponding affiliations on the next line with matching
+            numerals.
+
+                   Both runs should be in the same bullet item, centered, not bullets,
+            level 0, font size 48.
+
+                5. Return only the JSON object.
+
+
+
+              title_string:{{#1752736559319.meta#}}'
+        selected: false
+        title: bullet_for_title
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: '1752736572310'
+      position:
+        x: 6968.682886442395
+        y: 547.5975395538646
+      positionAbsolute:
+        x: 6968.682886442395
+        y: 547.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "\ndef main(arg1,bullet):\n    bullet.insert(0, arg1)\n    return {\n\
+          \        \"bullet\": bullet,\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          bullet:
+            children: null
+            type: array[string]
+        selected: false
+        title: bullet_title
+        type: code
+        variables:
+        - value_selector:
+          - '1752736572310'
+          - text
+          variable: arg1
+        - value_selector:
+          - '1752564134178'
+          - output
+          variable: bullet
+      height: 52
+      id: '1752736822426'
+      position:
+        x: 9007.143574660724
+        y: 605
+      positionAbsolute:
+        x: 9007.143574660724
+        y: 605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1752564134178'
+        model:
+          completion_params: {}
+          mode: chat
+          name: qwen-plus-2025-04-28
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 9a09f515-dbbc-4506-802f-7ed1bff525f0
+          role: system
+          text: '你是一个英文学术海报 bullet point 智能排版助手。你需要根据每个文本框（textbox）的最大可容纳字符数、宽度、高度，以及初步生成的
+            bullet point 内容，对 bullet point 进行自动调整，使其适合排版到海报上。
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            你的目标是：
+
+            - 如果内容太长，自动缩短、精简 bullet point，使其不超过七个words。
+
+            - 保持 bullet point 结构和原意，输出最终适合排版的 JSON 数据。
+
+            - 输出格式必须与输入 bullet point JSON 结构一致。
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+
+            请根据以下信息，对 bullet point 内容进行自动调整，使其适合排版到海报上：
+
+
+            【section 标题】
+
+            {{#1752632247397.title#}}
+
+
+            【每个文本框信息】
+
+            {{#1752632247397.panel_data#}}
+
+            - 文本框名称：textbox_name
+
+            - 最大字符数：num_chars
+
+            - 宽度（英寸）：width
+
+            - 高度（英寸）：height
+
+            - 初步 bullet point 内容（JSON，结构如下）：
+
+            {{#1752634762436.text#}}
+
+
+            请你：
+
+            1. 检查每个 bullet point 的内容长度是否适合（不超过最大字符数，内容不过于空洞）。
+
+            2. 如有必要，自动缩短、精简、合并、拆分、补充 bullet point，使其内容适合排版。
+
+            3. 保持 bullet point 的结构（如 alignment、bullet、level、font_size、runs 等字段）。
+
+            4. 输出最终可用于海报排版的 bullet point JSON，结构与输入{{#1752634762436.text#}}一致。/
+
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**
+
+            **只输出最终 JSON，不要有任何解释或多余内容。**'
+        selected: false
+        title: LLM 10
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 88
+      id: '1752817972114'
+      parentId: '1752564134178'
+      position:
+        x: 746.4924125644711
+        y: 65
+      positionAbsolute:
+        x: 8320.067556015312
+        y: 612.5975395538646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        code: "import json\nimport copy\nimport math\ndef main(mix_input, panell,\
+          \ figuree,imagee):\n    mix_input_json = json.loads(mix_input)\n    figures\
+          \ = figuree\n    panels = panell\n    panel_arrangement, figure_arrangement,\
+          \ text_arrangement = mix_input_json['panel_arrangement'], mix_input_json[\"\
+          figure_arrangement\"], mix_input_json[\"text_arrangement\"]\n    result_dict\
+          \ = {}\n    images = imagee\n    for item in images:\n    # 提取'id'作为键\n\
+          \        item_id = item[\n'id'\n]\n    # 创建一个新的字典，包含除了'id'之外的所有其他键值对\n \
+          \   # 使用 .copy() 方法可以避免修改原始字典\n        value_data = item.copy()\n      \
+          \  del value_data['id'\n]\n    \n    # 将提取的键和值添加到结果字典中\n        result_dict[item_id]\
+          \ = value_data\n    images = result_dict\n    #def 部分\n    def split_textbox(textbox,\
+          \ ratio):\n    # Calculate the new heights\n        total_ratio = ratio\
+          \ + 1  # because the ratio represents top:bottom as (ratio):(1)\n      \
+          \  top_height = textbox['height'] * ratio / total_ratio\n        bottom_height\
+          \ = textbox['height'] * 1 / total_ratio\n\n        # Derive the base textbox\
+          \ name by splitting off the existing _t suffix if present.\n        # This\
+          \ assumes the original textbox_name ends with \"_t<number>\".\n        base_name\
+          \ = textbox['textbox_name'].rsplit('_t', 1)[0]\n\n        # Create the top\
+          \ textbox dictionary\n        top_box = dict(textbox)  # make a shallow\
+          \ copy\n        top_box['height'] = top_height\n        # y remains the\
+          \ same for the top textbox\n        top_box['textbox_name'] = f\"{base_name}_t0\"\
+          \  # rename with _t0\n\n        # Create the bottom textbox dictionary\n\
+          \        bottom_box = dict(textbox)  # make a shallow copy\n        bottom_box['y']\
+          \ = textbox['y'] + top_height  # adjust the y position\n        bottom_box['height']\
+          \ = bottom_height\n        bottom_box['textbox_name'] = f\"{base_name}_t1\"\
+          \  # rename with _t1\n\n        return top_box, bottom_box\n    def char_capacity(\n\
+          \    bbox,\n    font_size_px=40 * (96 / 72),  # Default font size in px\
+          \ (40pt converted to px)\n    *,\n    # Average glyph width as fraction\
+          \ of font-size (≈0.6 for monospace,\n    # ≈0.52–0.55 for most proportional\
+          \ sans-serif faces)\n    avg_width_ratio: float = 0.54,\n    line_height_ratio:\
+          \ float = 1,\n    # Optional inner padding in px that the renderer might\
+          \ reserve\n    padding_px: int = 0,\n) -> int:\n\n        CHAR_CONST = 10\n\
+          \        _, _, height_px, width_px = bbox\n\n        usable_w = max(0, width_px\
+          \ - 2 * padding_px)\n        usable_h = max(0, height_px - 2 * padding_px)\n\
+          \        if usable_w == 0 or usable_h == 0:\n            return 0  # box\
+          \ is too small\n\n        avg_char_w = font_size_px * avg_width_ratio\n\
+          \        line_height = font_size_px * line_height_ratio\n\n        chars_per_line\
+          \ = max(1, math.floor(usable_w / avg_char_w))\n        lines = max(1, math.floor(usable_h\
+          \ / line_height))\n\n        return chars_per_line * lines * CHAR_CONST\n\
+          \    def to_inches(value_in_units, units_per_inch=72):\n\n        return\
+          \ value_in_units / units_per_inch\n    \n    def get_arrangments_in_inches(\n\
+          \    width, \n    height, \n    panel_arrangement, \n    figure_arrangement,\
+          \ \n    text_arrangement,\n    units_per_inch=72\n):\n\n        panel_arrangement_inches\
+          \ = copy.deepcopy(panel_arrangement)\n        figure_arrangement_inches\
+          \ = copy.deepcopy(figure_arrangement)\n        text_arrangement_inches =\
+          \ copy.deepcopy(text_arrangement)\n\n        for p in panel_arrangement_inches:\n\
+          \            p[\"x\"] = to_inches(p[\"x\"], units_per_inch)\n          \
+          \  p[\"y\"] = to_inches(p[\"y\"], units_per_inch)\n            p[\"width\"\
+          ] = to_inches(p[\"width\"], units_per_inch)\n            p[\"height\"] =\
+          \ to_inches(p[\"height\"], units_per_inch)\n\n        for f in figure_arrangement_inches:\n\
+          \            f[\"x\"] = to_inches(f[\"x\"], units_per_inch)\n          \
+          \  f[\"y\"] = to_inches(f[\"y\"], units_per_inch)\n            f[\"width\"\
+          ] = to_inches(f[\"width\"], units_per_inch)\n            f[\"height\"] =\
+          \ to_inches(f[\"height\"], units_per_inch)\n\n        for t in text_arrangement_inches:\n\
+          \            t[\"x\"] = to_inches(t[\"x\"], units_per_inch)\n          \
+          \  t[\"y\"] = to_inches(t[\"y\"], units_per_inch)\n            t[\"width\"\
+          ] = to_inches(t[\"width\"], units_per_inch)\n            t[\"height\"] =\
+          \ to_inches(t[\"height\"], units_per_inch)\n\n        width_inch, height_inch\
+          \ = to_inches(width, units_per_inch), to_inches(height, units_per_inch)\n\
+          \        return width_inch, height_inch, panel_arrangement_inches, figure_arrangement_inches,\
+          \ text_arrangement_inches\n\n#body 部分\n    text_arrangement_title = text_arrangement[0]\n\
+          \    text_arrangement = text_arrangement[1:]\n    text_arrangement_title_top,\
+          \ text_arrangement_title_bottom = split_textbox(\n            text_arrangement_title,\
+          \ \n            0.8\n        )\n    text_arrangement = [text_arrangement_title_top,\
+          \ text_arrangement_title_bottom] + text_arrangement\n\n    for i in range(len(figure_arrangement)):\n\
+          \        panel_id = figure_arrangement[i]['panel_id']\n        panel_section_name\
+          \ = panels[panel_id]['section_name']\n        figure_info = figures[panel_section_name]\n\
+          \        if 'image' in figure_info:\n            figure_id = figure_info['image']\n\
+          \            if not figure_id in images:\n                figure_path =\
+          \ images[str(figure_id)]['url']\n            else:\n                figure_path\
+          \ = images[figure_id]['url']\n        \n        figure_arrangement[i]['figure_path']\
+          \ = figure_path\n    \n    for text_arrangement_item in text_arrangement:\n\
+          \        num_chars = char_capacity(\n            bbox=(text_arrangement_item['x'],\
+          \ text_arrangement_item['y'], text_arrangement_item['height'], text_arrangement_item['width'])\n\
+          \        )\n        text_arrangement_item['num_chars'] = num_chars\n\n \
+          \   width_inch, height_inch, panel_arrangement_inches, figure_arrangement_inches,\
+          \ text_arrangement_inches = get_arrangments_in_inches(\n        1200, 900,\
+          \ panel_arrangement, figure_arrangement, text_arrangement, 25\n    )\n \
+          \   \n    tree_split_results = {\n        'poster_width': 1200,\n      \
+          \  'poster_height': 900,\n        'poster_width_inches': width_inch,\n \
+          \       'poster_height_inches': height_inch,\n        'panels': panels,\n\
+          \        'panel_arrangement': panel_arrangement,\n        'figure_arrangement':\
+          \ figure_arrangement,\n        'text_arrangement': text_arrangement,\n \
+          \       'panel_arrangement_inches': panel_arrangement_inches,\n        'figure_arrangement_inches':\
+          \ figure_arrangement_inches,\n        'text_arrangement_inches': text_arrangement_inches,\n\
+          \    }\n\n    return {\n        \"tree_split_results\":tree_split_results\n\
+          \n    }"
+        code_language: python3
+        desc: step4-5
+        outputs:
+          tree_split_results:
+            children: null
+            type: object
+        selected: false
+        title: 代码执行 3 (1)
+        type: code
+        variables:
+        - value_selector:
+          - '1751877418051'
+          - body
+          variable: mix_input
+        - value_selector:
+          - '1751595483415'
+          - paper_panels
+          variable: panell
+        - value_selector:
+          - '1751619680318'
+          - output_data
+          variable: figuree
+        - value_selector:
+          - '1751440936103'
+          - output_array
+          variable: imagee
+      height: 80
+      id: '17533381749780'
+      position:
+        x: 4824.811504172814
+        y: 736.8546928604679
+      positionAbsolute:
+        x: 4824.811504172814
+        y: 736.8546928604679
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(tree_split_results, figuree):\n    panel_arrangement = tree_split_results[\"\
+          panel_arrangement\"]\n\n    figure_arrangement = []\n    for panel in panel_arrangement:\n\
+          \        section = panel[\"panel_name\"]\n        if section in figuree:\n\
+          \            # 为该 section 填充图像框\n            figure_arrangement.append({\n\
+          \                \"panel_id\": panel[\"panel_id\"],\n                \"\
+          x\": panel[\"x\"] + 3,\n                \"y\": panel[\"y\"] + 3,\n     \
+          \           \"width\": panel[\"width\"] - 6,\n                \"height\"\
+          : panel[\"height\"] / 2,\n                \"figure_id\": figuree[section][\"\
+          image\"]\n            })\n\n    return {\n        \"figure_arrangement\"\
+          : figure_arrangement\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          figure_arrangement:
+            children: null
+            type: array[object]
+        selected: false
+        title: 从 figuree 生成必要的 figure_arrangement
+        type: code
+        variables:
+        - value_selector:
+          - '1751619680318'
+          - output_data
+          variable: figuree
+        - value_selector:
+          - '1752128946715'
+          - tree_split_results
+          variable: tree_split_results
+      height: 52
+      id: '1753349694921'
+      position:
+        x: 5493.0937476072395
+        y: 541
+      positionAbsolute:
+        x: 5493.0937476072395
+        y: 541
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(tree_split_results, figure_arrangement, images=None):\n  \
+          \  dpi = 25\n\n    id_to_url = {}\n    if images and isinstance(images,\
+          \ dict):\n        for k, v in images.items():\n            if isinstance(v,\
+          \ dict):\n                id_to_url[str(k)] = v.get(\"url\", \"\")\n   \
+          \         elif isinstance(v, str):\n                id_to_url[str(k)] =\
+          \ v\n\n    enriched = []\n    for fig in figure_arrangement:\n        fig_id\
+          \ = str(fig.get(\"figure_id\"))\n        fig_url = id_to_url.get(fig_id,\
+          \ \"\")\n        enriched.append({\n            \"panel_id\": fig[\"panel_id\"\
+          ],\n            \"x\": fig[\"x\"],\n            \"y\": fig[\"y\"],\n   \
+          \         \"width\": fig[\"width\"],\n            \"height\": fig[\"height\"\
+          ],\n            \"figure_id\": fig.get(\"figure_id\"),\n            \"figure_path\"\
+          : fig_url,\n            \"figure_name\": fig_url.split(\"/\")[-1] if fig_url\
+          \ else \"\"\n        })\n\n    tree_split_results[\"figure_arrangement\"\
+          ] = enriched\n    tree_split_results[\"figure_arrangement_inches\"] = [\n\
+          \        {\n            \"panel_id\": f[\"panel_id\"],\n            \"x\"\
+          : f[\"x\"] / dpi,\n            \"y\": f[\"y\"] / dpi,\n            \"width\"\
+          : f[\"width\"] / dpi,\n            \"height\": f[\"height\"] / dpi,\n  \
+          \          \"figure_id\": f[\"figure_id\"],\n            \"figure_path\"\
+          : f[\"figure_path\"],\n            \"figure_name\": f[\"figure_name\"]\n\
+          \        } for f in enriched\n    ]\n\n    return {\n        \"tree_split_results_fixed\"\
+          : tree_split_results\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          tree_split_results_fixed:
+            children: null
+            type: object
+        selected: false
+        title: 将这个 figure_arrangement 合并回 tree_split_results
+        type: code
+        variables:
+        - value_selector:
+          - '1753349694921'
+          - figure_arrangement
+          variable: figure_arrangement
+        - value_selector:
+          - '1752128946715'
+          - tree_split_results
+          variable: tree_split_results
+        - value_selector:
+          - '1753356102389'
+          - images
+          variable: images
+      height: 52
+      id: '1753349880726'
+      position:
+        x: 5882.827728368996
+        y: 547.5975395538646
+      positionAbsolute:
+        x: 5882.827728368996
+        y: 547.5975395538646
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(output_array):\n    images = {}\n    for i, item in enumerate(output_array):\n\
+          \        if isinstance(item, dict) and item.get(\"type\") == \"figure_image\"\
+          \ and \"url\" in item:\n            images[str(i + 1)] = {\n           \
+          \     \"url\": item[\"url\"],\n                \"name\": item.get(\"name\"\
+          , item[\"url\"].split(\"/\")[-1])  # 保底用url名\n            }\n    return\
+          \ {\n        \"images\": images\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          images:
+            children: null
+            type: object
+        selected: false
+        title: 转数据格式
+        type: code
+        variables:
+        - value_selector:
+          - '1751440936103'
+          - output_array
+          variable: output_array
+      height: 52
+      id: '1753356102389'
+      position:
+        x: 3098.302010164995
+        y: 647.1541391361535
+      positionAbsolute:
+        x: 3098.302010164995
+        y: 647.1541391361535
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -4254.678269129707
+      y: -226.71027866760915
+      zoom: 0.8572440108367625
