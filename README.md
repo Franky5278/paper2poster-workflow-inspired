@@ -89,7 +89,8 @@ the upstream Paper2Poster repository; this project only adapts their I/O to HTTP
 | `PosterAgent/tree_split_layout.py` | dropped `multi_class="multinomial"` from `LogisticRegression` | removed in scikit-learn ≥ 1.5, crashed model training |
 | `gen_pptx_code` call sites | pass POSIX paths (`Path.as_posix()`) | the generated Python embeds the paths in string literals; `C:\Users\...` becomes a `\U` escape error |
 | figure files | copied to `fig_1.png`, `fig_2.png`, … | variable names in the generated code are derived from file names, and a name starting with a digit is a syntax error |
-| figure boxes | clamped inside their panel | the layout model returns panel boxes without figure slots, so figures overlapped section headers |
+| figure boxes | letterboxed inside their panel, aspect ratio preserved | the layout model returns panel boxes without figure slots, so figures overlapped headers and were stretched |
+| text boxes | font size solved per box (~90% fill) | Dify emits fixed 48/60pt copy regardless of how much room a panel got |
 
 ---
 
