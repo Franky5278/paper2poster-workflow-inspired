@@ -117,6 +117,69 @@ async def _cleanup_temp_dir(path: Path):
             logger.error("cleanup failed %s: %s", path, exc)
 
 
+def _boxes_overlap(a, b, pad=0.02):
+    """True when two inch-space rects (x, y, width, height) intersect."""
+    ax, ay, aw, ah = float(a["x"]), float(a["y"]), float(a["width"]), float(a["height"])
+    bx, by, bw, bh = float(b["x"]), float(b["y"]), float(b["width"]), float(b["height"])
+    return not (
+        ax + aw <= bx - pad
+        or bx + bw <= ax - pad
+        or ay + ah <= by - pad
+        or by + bh <= ay - pad
+    )
+
+
+def _fit_font_sizes(bullet_content, text_boxes, fill=0.82, min_scale=0.62, max_scale=2.6):
+    """Scale each textbox's font size so its copy fills roughly `fill` of the box height.
+
+    Font sizes arrive from Dify as absolute points (48 body / 60 heading) with no knowledge of
+    the box the layout produced, which is why short sections leave big empty areas and dense
+    ones overflow. This estimates wrapped line counts and solves for a size that fits.
+    """
+    import math
+
+    if not bullet_content or not text_boxes:
+        return
+
+    boxes = {b.get("textbox_name"): b for b in text_boxes}
+
+    def est_height(paras, size, width_in):
+        line_h = size / 72.0 * 1.28
+        chars_per_line = max(8, int(width_in / (size / 72.0 * 0.50)))
+        lines = 0
+        for para in paras:
+            text = " ".join(r.get("text", "") for r in para.get("runs", []))
+            lines += max(1, math.ceil(len(text) / chars_per_line))
+        return lines * line_h
+
+    for index, section in enumerate(bullet_content):
+        # section 0 is the poster title block; its size is already right, and the box is
+        # deliberately short and wide so the fitter would blow it up
+        if index == 0:
+            continue
+        for name, paras in section.items():
+            if not isinstance(paras, list) or not paras:
+                continue
+            box = boxes.get(name)
+            if not box:
+                continue
+            width_in, height_in = float(box["width"]), float(box["height"])
+            sizes = [p.get("font_size", 48) for p in paras if isinstance(p.get("font_size"), (int, float))]
+            base = max(sizes) if sizes else 48
+
+            lo, hi = min_scale, max_scale
+            for _ in range(20):
+                mid = (lo + hi) / 2
+                if est_height(paras, base * mid, width_in) <= height_in * fill:
+                    lo = mid
+                else:
+                    hi = mid
+
+            for para in paras:
+                current = para.get("font_size", base)
+                para["font_size"] = int(max(16, min(120, round(current * lo))))
+
+
 def _models():
     if "params" not in _train_cache:
         logger.info("training layout models (cached after first call) ...")
@@ -207,10 +270,12 @@ async def generate_poster_endpoint(request: Request, background_tasks: Backgroun
         # pull remote figures down to disk under names that are safe Python identifiers
         # (the generated rendering code derives variable names from the file name)
         if figure_in:
+            # URLs use host.docker.internal so containers can reach us; on the host itself
+            # that name does not resolve, so swap it back to loopback. HOST_ALIAS_REWRITE
             figdir = OUTPUT_DIR / "figures"
             figdir.mkdir(parents=True, exist_ok=True)
             for idx, fig in enumerate(figure_in, start=1):
-                url = fig.get("figure_path") or ""
+                url = (fig.get("figure_path") or "").replace("host.docker.internal", "127.0.0.1")
                 if url.startswith("http"):
                     try:
                         safe = figdir / f"fig_{idx}{Path(url).suffix or '.png'}"
@@ -234,27 +299,62 @@ async def generate_poster_endpoint(request: Request, background_tasks: Backgroun
                         fig["figure_path"] = safe.as_posix()
                         fig["figure_name"] = safe.name
 
-        # inset figures inside their panel so they never cover the section header or the border
+        # keep the title panel clean: figures there would cover the title
+        if figure_in:
+            titled = {
+                p.get("panel_id")
+                for p in (panel_in or [])
+                if "title" in str(p.get("panel_name", "")).lower()
+            }
+            figure_in = [f for f in figure_in if f.get("panel_id") not in titled]
+
+        # Decide the figure/text split BEFORE font fitting, so the fitter sees the final boxes.
+        # A panel that also holds copy gives its top 45% to the figure and the rest to the text;
+        # a panel that is figure-only keeps the whole area.
         try:
             panels_by_id = {p.get("panel_id"): p for p in (panel_in or [])}
             for fig in figure_in or []:
                 panel = panels_by_id.get(fig.get("panel_id"))
                 if not panel:
                     continue
-                margin = 0.12
-                header = 0.45
+                margin, header = 0.12, 0.45
                 px, py = panel["x"], panel["y"]
                 pw, ph = panel["width"], panel["height"]
+                has_text = any(_boxes_overlap(t, panel) for t in (text_in or []))
+                share = 0.45 if has_text else 1.0
+
                 fig["width"] = min(fig["width"], pw - 2 * margin)
-                fig["height"] = min(fig["height"], ph - header - margin)
+                fig["height"] = min(fig["height"], max(0.8, (ph - header - margin) * share))
                 fig["x"] = max(px + margin, min(fig["x"], px + pw - fig["width"] - margin))
-                fig["y"] = max(py + header, min(fig["y"], py + ph - fig["height"] - margin))
+                fig["y"] = py + header
+
+                if has_text:
+                    boxes = sorted(
+                        (t for t in (text_in or []) if _boxes_overlap(t, panel)),
+                        key=lambda t: t["y"],
+                    )
+                    title_box = boxes[0] if len(boxes) > 1 else None
+                    if title_box is not None:
+                        title_box["y"] = py + 0.06
+                        title_box["height"] = max(0.95, min(1.35, ph * 0.22))
+                        fig["y"] = title_box["y"] + title_box["height"] + 0.06
+                        body_boxes = boxes[1:]
+                    else:
+                        body_boxes = boxes
+                    bottom = fig["y"] + fig["height"] + 0.12
+                    for t in body_boxes:
+                        t["y"] = bottom
+                        t["height"] = max(0.8, (py + ph) - bottom - 0.12)
         except Exception as exc:
             logger.warning("figure inset failed: %s", exc)
 
-        # keep the title panel clean: figures assigned to panel 0 would cover the title
-        if figure_in:
-            figure_in = [f for f in figure_in if f.get("panel_id") != 0]
+        # the Dify side writes fixed font sizes (48pt body, 60pt headings) that know nothing
+        # about how much room a panel actually got, which leaves large empty areas on short
+        # sections. Re-derive each textbox's size from its own box so the copy fills it.
+        try:
+            _fit_font_sizes(bullet_content, text_in)
+        except Exception as exc:
+            logger.warning("font fit failed: %s", exc)
 
         pptx_path = tmp / "poster.pptx"
         code = generate_poster_code(
