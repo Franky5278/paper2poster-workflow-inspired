@@ -1,0 +1,14 @@
+# Runtime for the two local services that the Dify workflow calls.
+# Python 3.11 is what this was verified on.
+docling==2.143.1
+fastapi
+uvicorn[standard]
+python-multipart
+requests
+pymupdf
+pillow
+scikit-learn>=1.5
+lxml
+numpy
+matplotlib
+python-pptx==1.0.2
