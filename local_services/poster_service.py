@@ -117,6 +117,20 @@ async def _cleanup_temp_dir(path: Path):
             logger.error("cleanup failed %s: %s", path, exc)
 
 
+def _image_ratio(path) -> float:
+    """width / height of a figure file, or 0 when it cannot be read."""
+    try:
+        from PIL import Image
+
+        if not path:
+            return 0.0
+        with Image.open(path) as im:
+            w, h = im.size
+        return (w / h) if h else 0.0
+    except Exception:
+        return 0.0
+
+
 def _boxes_overlap(a, b, pad=0.02):
     """True when two inch-space rects (x, y, width, height) intersect."""
     ax, ay, aw, ah = float(a["x"]), float(a["y"]), float(a["width"]), float(a["height"])
@@ -129,7 +143,7 @@ def _boxes_overlap(a, b, pad=0.02):
     )
 
 
-def _fit_font_sizes(bullet_content, text_boxes, fill=0.82, min_scale=0.62, max_scale=2.6):
+def _fit_font_sizes(bullet_content, text_boxes, fill=0.90, min_scale=0.55, max_scale=3.4):
     """Scale each textbox's font size so its copy fills roughly `fill` of the box height.
 
     Font sizes arrive from Dify as absolute points (48 body / 60 heading) with no knowledge of
@@ -141,11 +155,20 @@ def _fit_font_sizes(bullet_content, text_boxes, fill=0.82, min_scale=0.62, max_s
     if not bullet_content or not text_boxes:
         return
 
-    boxes = {b.get("textbox_name"): b for b in text_boxes}
+    # Boxes arrive as <panel>_t0 (section heading) and <panel>_t1 (body), in panel order;
+    # the Dify payload keys its sections "title" / "textbox1". Match them positionally.
+    by_name = {b.get("textbox_name"): b for b in text_boxes}
+
+    def box_for(section_index, key):
+        if key in by_name:
+            return by_name[key]
+        offset = 0 if key == "title" else 1
+        idx = section_index * 2 + offset
+        return text_boxes[idx] if idx < len(text_boxes) else None
 
     def est_height(paras, size, width_in):
-        line_h = size / 72.0 * 1.28
-        chars_per_line = max(8, int(width_in / (size / 72.0 * 0.50)))
+        line_h = size / 72.0 * 1.45
+        chars_per_line = max(8, int(width_in / (size / 72.0 * 0.54)))
         lines = 0
         for para in paras:
             text = " ".join(r.get("text", "") for r in para.get("runs", []))
@@ -160,7 +183,11 @@ def _fit_font_sizes(bullet_content, text_boxes, fill=0.82, min_scale=0.62, max_s
         for name, paras in section.items():
             if not isinstance(paras, list) or not paras:
                 continue
-            box = boxes.get(name)
+            # never rescale a section heading: it lives in a deliberately short strip and
+            # the fitter would otherwise blow it up until it is clipped by the panel
+            if name == "title":
+                continue
+            box = box_for(index, name)
             if not box:
                 continue
             width_in, height_in = float(box["width"]), float(box["height"])
@@ -177,7 +204,11 @@ def _fit_font_sizes(bullet_content, text_boxes, fill=0.82, min_scale=0.62, max_s
 
             for para in paras:
                 current = para.get("font_size", base)
-                para["font_size"] = int(max(16, min(120, round(current * lo))))
+                para["font_size"] = int(max(16, min(160, round(current * lo))))
+            logger.info(
+                "fit %-22s box=%.1fx%.1f base=%d scale=%.2f -> %dpt",
+                name, width_in, height_in, base, lo, paras[0].get("font_size"),
+            )
 
 
 def _models():
@@ -321,11 +352,26 @@ async def generate_poster_endpoint(request: Request, background_tasks: Backgroun
                 px, py = panel["x"], panel["y"]
                 pw, ph = panel["width"], panel["height"]
                 has_text = any(_boxes_overlap(t, panel) for t in (text_in or []))
-                share = 0.45 if has_text else 1.0
+                share = 0.62 if has_text else 1.0
 
-                fig["width"] = min(fig["width"], pw - 2 * margin)
-                fig["height"] = min(fig["height"], max(0.8, (ph - header - margin) * share))
-                fig["x"] = max(px + margin, min(fig["x"], px + pw - fig["width"] - margin))
+                max_w = pw - 2 * margin
+                max_h = max(0.8, (ph - header - margin) * share)
+
+                # fit inside the box WITHOUT distorting the picture: the layout model hands us
+                # an arbitrary rect, and stretching to it squashed wide figures into strips
+                ratio = _image_ratio(fig.get("figure_path"))
+                if ratio:
+                    if max_w / max_h > ratio:
+                        fig["height"] = max_h
+                        fig["width"] = max_h * ratio
+                    else:
+                        fig["width"] = max_w
+                        fig["height"] = max_w / ratio
+                else:
+                    fig["width"] = min(fig["width"], max_w)
+                    fig["height"] = min(fig["height"], max_h)
+
+                fig["x"] = px + (pw - fig["width"]) / 2
                 fig["y"] = py + header
 
                 if has_text:
