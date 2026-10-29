@@ -40,6 +40,12 @@ with a visual [Dify](https://dify.ai) workflow, rebuilt from the
 |---|---|
 | ![workflow](docs/images/dify-workflow.png) | ![run](docs/images/dify-run.png) |
 
+### Two papers, same workflow, no per-paper tuning
+
+| «STREAM3R» — 12 sections, 3 figures | «Metric-Phase Fields» — 7 sections, 3 figures |
+|---|---|
+| [![poster](docs/images/poster.png)](docs/images/poster.png) | [![poster](docs/images/poster-metric.png)](docs/images/poster-metric.png) |
+
 ---
 
 ## Table of contents

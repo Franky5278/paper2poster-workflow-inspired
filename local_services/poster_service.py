@@ -179,6 +179,21 @@ def _fit_font_sizes(bullet_content, text_boxes, fill=0.90, min_scale=0.55, max_s
         # section 0 is the poster title block; its size is already right, and the box is
         # deliberately short and wide so the fitter would blow it up
         if index == 0:
+            # the title block keeps its design size, but a long affiliation line must not run
+            # off the slide: shrink any single line wider than its box
+            for name, paras in section.items():
+                if not isinstance(paras, list):
+                    continue
+                box = box_for(0, name)
+                if not box:
+                    continue
+                avail = float(box["width"]) * 72.0
+                for para in paras:
+                    text = " ".join(r.get("text", "") for r in para.get("runs", []))
+                    size = para.get("font_size", 48)
+                    est = len(text) * size * 0.52
+                    if est > avail > 0:
+                        para["font_size"] = int(max(14, size * avail / est))
             continue
         for name, paras in section.items():
             if not isinstance(paras, list) or not paras:
