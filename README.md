@@ -34,7 +34,7 @@ with a visual [Dify](https://dify.ai) workflow, rebuilt from the
 | [`docs/video/demo.mp4`](docs/video/demo.mp4) | full workflow run, nodes turning green as each stage completes |
 | [`docs/video/poster-preview.mp4`](docs/video/poster-preview.mp4) | 10 s slow zoom over the generated poster |
 | [`docs/images/poster.png`](docs/images/poster.png) | the poster itself, 5280 × 3960 |
-| `generated_posters/Dify_poster/Dify_poster.pptx` | the editable deck the poster was rendered from |
+| [`docs/Dify_poster.pptx`](docs/Dify_poster.pptx) | the editable deck the poster was rendered from |
 
 | Dify canvas | Test run |
 |---|---|
